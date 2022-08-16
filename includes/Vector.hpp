@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/06/03 22:56:41 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/06/21 22:04:38 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,17 @@
 #include <stdexcept>
 #include <iostream>
 #include <algorithm>
+
+#include "reverse_iterator.hpp"
+#include "random_access_iterator.hpp"
+#include "iterator_traits.hpp"
+
+
+namespace ft
+{
+	template <class T, bool B> class random_access_iterator;
+	template <class T, bool B> class reverse_iterator;
+}
 
 namespace ft
 {
@@ -45,7 +56,44 @@ namespace ft
 			
 			typedef ft::iterator_traits<iterator>::difference_type	difference_type;
 			typedef typename allocator_type::size_type				size_type;
+		
+		
+			Vector();
+			~Vector();
+			Vector &operator=(const Vector &rhs);
+			
+			const_iterator			begin();
+			iterator				begin();
+			iterator				end();
+			const_iterator			end();
+			reverse_iterator		rbegin();
+			const_reverse_iterator	rbegin();
+			reverse_iterator		rend();
+			const_reverse_iterator	rend();
+			
+			unsigned int			size() const;
+			unsigned int			max_size() const;
+			void					resize();
+			unsigned int			capacity();
+			bool					empty();
+			void					reserve();
+			
+			reference			operator[](unsigned int size);
+			const_reference		operator[](unsigned int size) const;
+			
+			reference			at();
+			const_reference		at() const;
+			reference			front();
+			const_reference		front() const;
+			reference			end();
+			const_reference		end() const;
+			value_type*			data();
+			const value_type*	data();
+			
 	};
+	
+	
+	
 	
 }
 
