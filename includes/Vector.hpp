@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/08/26 02:56:50 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/08/26 03:42:52 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,14 @@ namespace ft
 	class Vector
 	{
 		public:
-			//first template parameter (T)
-			typedef T											value_type;
-			//second template parameter (Alloc)
-			typedef Alloc										allocator_type;
+			typedef T												value_type;
+			typedef Alloc											allocator_type;
 			
 			//reference & pointer
-			typedef typename allocator_type::reference			reference;
-			typedef typename allocator_type::const_reference	const_reference;
-			typedef typename allocator_type::pointer			pointer;
-			typedef typename allocator_type::const_pointer		const_pointer;
+			typedef typename allocator_type::reference				reference;
+			typedef typename allocator_type::const_reference		const_reference;
+			typedef typename allocator_type::pointer				pointer;
+			typedef typename allocator_type::const_pointer			const_pointer;
 			
 			//iterators
 			typedef ft::random_access_iterator<value_type>			iterator;
@@ -75,18 +73,76 @@ namespace ft
 			iterator				end() {return iterator(_vector + _size);};
 			const_iterator			end() {return const_iterator(_vector + _size);};
 			
-			reverse_iterator		rbegin() {return reverse_iterator(_vector + _size - 1)};
-			const_reverse_iterator	rbegin() {return const_reverse_iterator(_vector + _size - 1)};
+			reverse_iterator		rbegin() {return reverse_iterator(_vector + _size - 1);};
+			const_reverse_iterator	rbegin() {return const_reverse_iterator(_vector + _size - 1);};
 			
-			reverse_iterator		rend();
-			const_reverse_iterator	rend();
+			reverse_iterator		rend() {return reverse_iterator(_vector - 1);};
+			const_reverse_iterator	rend() {return const_reverse_iterator(_vector - 1);};
 			
-			unsigned int			size() const;
-			unsigned int			max_size() const;
-			void					resize();
-			unsigned int			capacity();
-			bool					empty();
-			void					reserve();
+			
+			
+			//Functionnal memory part
+			unsigned int			size() const 
+			{
+				return _size;
+			};
+			
+			//Max size stack overflow answer
+			//https://stackoverflow.com/questions/3813124/c-vector-max-size#:~:text=max_size()%20is%20the%20theoretical,or%202%5E29%20double%20values.
+			unsigned int			max_size() const 
+			{
+				if (sizeof(value_type) == 1)
+					return (pow(2.0, 64.0) / 2.0) - 1;
+				return (pow(2.0, 64.0) / static_cast<double>(sizeof(value_type))) - 1;
+			};
+			
+			//Function in case the memory allocated is not sufficient to add the new element, we need to reallocate.
+			//First, we check if we are able to resize by checking max capacity.
+			//If we want to resize smaller we just have to remove extra space.
+			//Otherwise we need to insert it.
+			void					resize(size_type alloc_size, value_type value)
+			{
+				if (alloc_size > max_size())
+					throw (std::length_error("vector::resize"));
+				else if (alloc_size < this.size())
+				(
+					while (this.size() > alloc_size)
+					{
+						_end--;
+						_alloc.destroy(_end);
+					}
+				)
+				else
+				{
+					this->insert(this->_end(), alloc_size - this->size(), value);
+				}
+			};
+			
+			unsigned int			capacity()
+			{
+				return (_capacity);
+			};
+			
+			
+			bool					empty()
+			{
+				return (_size == 0);
+			};
+			
+			
+			void					reserve(size_type alloc_size);
+			{
+				if (alloc_size > max_size())
+					throw std::length_error("vector::reserve");
+				if (alloc_size > _capacity)
+				{
+					pointer old_start = _start;
+					pointer old_end = _end;
+					size_type old_size_type = _size;
+					size_type old_capacity = _capacity;
+				}
+            }
+
 			
 			reference			operator[](unsigned int size);
 			const_reference		operator[](unsigned int size) const;
