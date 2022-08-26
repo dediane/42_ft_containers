@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/06/21 22:04:38 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/08/26 02:56:50 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,28 @@ namespace ft
 			
 			typedef ft::iterator_traits<iterator>::difference_type	difference_type;
 			typedef typename allocator_type::size_type				size_type;
+			
+		private:
+			Alloc		_alloc;
+			pointer		_vector;
+			size_type	_size;
+			size_type	_capacity:
 		
-		
+		public:
 			Vector();
 			~Vector();
 			Vector &operator=(const Vector &rhs);
 			
-			const_iterator			begin();
-			iterator				begin();
-			iterator				end();
-			const_iterator			end();
-			reverse_iterator		rbegin();
-			const_reverse_iterator	rbegin();
+			//Iterators functions
+			iterator				begin() {return iterator(_vector);};
+			const_iterator			begin() {return const_iterator(_vector);};
+			
+			iterator				end() {return iterator(_vector + _size);};
+			const_iterator			end() {return const_iterator(_vector + _size);};
+			
+			reverse_iterator		rbegin() {return reverse_iterator(_vector + _size - 1)};
+			const_reverse_iterator	rbegin() {return const_reverse_iterator(_vector + _size - 1)};
+			
 			reverse_iterator		rend();
 			const_reverse_iterator	rend();
 			
@@ -91,10 +101,6 @@ namespace ft
 			const value_type*	data();
 			
 	};
-	
-	
-	
-	
 }
 
 #endif
