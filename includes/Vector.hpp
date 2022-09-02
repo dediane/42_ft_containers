@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/09/02 02:50:29 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/09/02 12:11:32 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,14 @@
 #include "reverse_iterator.hpp"
 #include "random_access_iterator.hpp"
 #include "iterator_traits.hpp"
+#include "utils/enable_if.hpp"
+#include "utils/is_integral.hpp"
 
-
-// namespace ft
-// {
-// 	template <class T, bool B> class random_access_iterator;
-// 	template <class T, bool B> class reverse_iterator;
-// }
+namespace ft
+{
+ 	template <class T> class random_access_iterator;
+	template <class T> class reverse_iterator;
+}
 
 //https://cplusplus.com/reference/vector/vector/
 namespace ft
@@ -79,14 +80,6 @@ namespace ft
 				_vector = _alloc.allocate(0);
 			};
 			
-			template <class InputIterator>
-			vector(InputIterator begin, InputIterator end, const allocator_type &allocator = allocator_type())
-			:  _alloc(allocator), _vector(0), _size(0), _capacity(0)
-			{
-				_vector = _alloc.allocate(0);
-				assign(begin, end);
-			};
-			
 			vector(size_type n, const_reference value = value_type(), const allocator_type &allocator = allocator_type())
 			: _alloc(allocator), _vector(0), _size(0), _capacity(0)
 			{
@@ -94,15 +87,23 @@ namespace ft
 				assign(n, value);
 			};
 			
-			vector(const vector &other)
-			:  _alloc(other._allocator), _vector(0), _size(0), _capacity(0)
+			template <class InputIterator>
+			vector(InputIterator begin, InputIterator end, const allocator_type &allocator = allocator_type(),
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL):  _alloc(allocator), _vector(0), _size(0), _capacity(0)
 			{
-				*this = other;
+				_vector = _alloc.allocate(0);
+				assign(begin, end);
+			};
+			
+			vector(const vector &rhs)
+			:  _alloc(rhs._allocator), _vector(0), _size(0), _capacity(0)
+			{
+				*this = rhs;
 			};
 			
 			~vector(void)
 			{
-				_alloc.deallocate(_alloc, _capacity);
+				_alloc.deallocate(_vector, _capacity);
 			};
 			vector &operator=(const vector &other)
 			{
@@ -187,8 +188,6 @@ namespace ft
 			
 			void					reserve(size_type alloc_size)
 			{
-				if (alloc_size > max_size())
-					throw std::length_error("vector::reserve");
 				if (alloc_size > _capacity)
 				{
 					size_type i = -1;
@@ -198,10 +197,10 @@ namespace ft
 					_capacity = alloc_size;
 					while (++i < _size)
 					{
-						tmp[i] = _alloc[i];
+						tmp[i] = _vector[i];
 					}
-					_alloc.deallocate(_alloc, _size);
-					_alloc = tmp;
+					_alloc.deallocate(_vector, _size);
+					_vector = tmp;
 				}
 			};
 
@@ -281,7 +280,7 @@ namespace ft
 			
 			void pop_back()
 			{
-				if (_size())
+				if (size())
 					_size--;
 			};
 			
@@ -311,12 +310,12 @@ namespace ft
 			};
 			
 			template <class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last)
+			void insert(iterator position, InputIterator begin, InputIterator end)
 			{
-				while (first != last)
+				while (begin != end)
 				{
-					position = insert(position, *first + 1);
-					first++;
+					position = insert(position, begin) + 1;
+					++begin;
 				}
 			};
 			

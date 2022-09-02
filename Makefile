@@ -6,16 +6,16 @@
 #    By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 23:23:45 by ddecourt          #+#    #+#              #
-#    Updated: 2022/09/02 02:35:59 by ddecourt         ###   ########.fr        #
+#    Updated: 2022/09/02 03:23:17 by ddecourt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =	ft_containers
 
-CFLAGS	=	-Wall -Wextra -Werror -std=c++98 -g -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address -std=c++98
 
 SRCS =	srcs/main.cpp \
-		srcs/main_vector.cpp \
+
 
 CC	=	clang++
 RM	=	rm -f
