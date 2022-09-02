@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/09/02 12:11:32 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/09/02 14:52:10 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,20 +142,22 @@ namespace ft
 			// const_reverse_iterator	rend() const {return const_reverse_iterator(begin());};
 			
 			
+//___________________________________________________________________________________________________________________
 
 			//**********************************************//
 			// Capacity functions                           //
 			//**********************************************//
 			
 			//Functionnal memory part
-			unsigned int			size() const 
+			unsigned int			size() const   //Returns the number of elements in the vector.
 			{
 				return _size;
 			};
 			
 			//Max size stack overflow answer
 			//https://stackoverflow.com/questions/3813124/c-vector-max-size#:~:text=max_size()%20is%20the%20theoretical,or%202%5E29%20double%20values.
-			unsigned int			max_size() const 
+			//Returns the maximum number of elements that the vector can hold.
+			unsigned int			max_size() const   
 			{
 				if (sizeof(value_type) == 1)
 					return (pow(2.0, 64.0) / 2.0) - 1;
@@ -166,6 +168,7 @@ namespace ft
 			//First, we check if we are able to resize by checking max capacity.
 			//If we want to resize smaller we just have to remove extra space.
 			//Otherwise we need to insert it.
+			//Resizes the container so that it contains alloc_size elements.
 			void					resize(size_type alloc_size, value_type value)
 			{
 				while (alloc_size < _size)
@@ -174,19 +177,25 @@ namespace ft
 					push_back(value);
 			};
 			
+			
+			//Returns the size of the storage space currently allocated 
+			//for the vector, expressed in terms of elements.
 			unsigned int			capacity()
 			{
 				return (_capacity);
 			};
 			
 			
+			 //Returns whether the vector is empty 
 			bool					empty()
 			{
 				return (_size == 0);
 			};
 			
 			
-			void					reserve(size_type alloc_size)
+			//Requests that the vector capacity be 
+			//at least enough to contain alloc_size elements.
+			void					reserve(size_type alloc_size) 
 			{
 				if (alloc_size > _capacity)
 				{
@@ -203,6 +212,8 @@ namespace ft
 					_vector = tmp;
 				}
 			};
+
+//___________________________________________________________________________________________________________________
 
 			
 			//**********************************************//
@@ -351,8 +362,51 @@ namespace ft
 				erase(begin(), end());
 			};
 			
-
+		
 	};
-}
+	
+	//*****************************************//
+	//Operators                                //
+	//*****************************************//
+	
+	template <class T, class Alloc>
+	bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+			if (lhs.size() != rhs.size())
+					return false;
+				return equal(lhs.begin(), lhs.end(), rhs.begin());
+	}
+
+	template <class T, class Alloc>
+	bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (!(lhs == rhs));
+	}
+
+	template <class T, class Alloc>
+	bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (lhs < rhs);
+	}
+
+	template <class T, class Alloc>
+	bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (!(lhs > rhs));
+	}
+
+	template <class T, class Alloc>
+	bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (lhs > rhs);
+	}
+		
+	template <class T, class Alloc>
+	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		return (!(lhs < rhs));
+	}
+		
+}	
 
 #endif

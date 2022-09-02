@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 23:59:20 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/09/02 13:30:26 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/09/02 13:45:08 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ namespace ft {
 			typedef const T&								const_reference;
 			typedef T*										pointer;
 			typedef const T*								const_pointer;
-			
 	};
 }
 #endif
