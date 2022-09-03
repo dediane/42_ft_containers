@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/09/02 14:52:10 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/09/03 01:28:44 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,23 +320,38 @@ namespace ft
 					position = insert(position, val);
 			};
 			
+			// typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL
 			template <class InputIterator>
-			void insert(iterator position, InputIterator begin, InputIterator end)
+			void insert(iterator position, InputIterator begin, InputIterator end, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 			{
+								// vector tmp(*this);
+				// size_type n = 0;
+				// for (InputIterator it; it != end; it++)
+				// 	n++;
+				// size_type i = position - begin();
+				// _size += n;
+				// reserve(_size);
+				
+				// for (size_type j = i; j < i + n; ++j)
+				// 	_alloc.construct(_vector + j, *begin++);
+
+				// for (size_type j = i + n; j < _size; ++j)
+				// 	_alloc.construct(_vector + j, tmp[j - n]);
+		
 				while (begin != end)
 				{
-					position = insert(position, begin) + 1;
+					position = insert(position, *begin) + 1;
 					++begin;
 				}
 			};
 			
 			iterator erase (iterator position)
 			{
-				iterator cursor = position;
-				while (cursor + 1 != end())
+				iterator tmp = position;
+				while (tmp + 1 != end())
 				{
-					*cursor = *(cursor + 1);
-					cursor++;
+					*tmp = *(position + 1);
+					tmp++;
 				}
 				_size--;
 				return (iterator(position));
@@ -361,8 +376,6 @@ namespace ft
 			{
 				erase(begin(), end());
 			};
-			
-		
 	};
 	
 	//*****************************************//
