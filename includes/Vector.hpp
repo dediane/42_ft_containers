@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/09/03 01:28:44 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/09/03 22:53:19 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ namespace ft
 			};
 			
 			vector(const vector &rhs)
-			:  _alloc(rhs._allocator), _vector(0), _size(0), _capacity(0)
+			:  _alloc(rhs._alloc), _vector(0), _size(0), _capacity(0)
 			{
 				*this = rhs;
 			};
