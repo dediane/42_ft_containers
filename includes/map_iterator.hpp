@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 23:10:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/09/04 23:13:46 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/09/14 17:49:00 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,15 @@ namespace ft{
 			node_pointer _node;
 
 		public:
+		//constructors
 			map_iterator() : _node(NULL) {}
 			map_iterator(node_pointer ptr) : _node(ptr) {}
 			map_iterator(map_iterator const & src) : _node(src._node) {}
 			map_iterator & operator=(map_iterator const & rhs) {_node = rhs._node; return *this;}
+
+		//destructor
 			~map_iterator() {}
+			
 
 			map_iterator& operator++ (void) {increase(); return *this;}
 			map_iterator operator++ (int) {map_iterator it = *this; ++(*this); return it;}

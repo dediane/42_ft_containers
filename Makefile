@@ -6,13 +6,13 @@
 #    By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 23:23:45 by ddecourt          #+#    #+#              #
-#    Updated: 2022/09/02 22:46:06 by ddecourt         ###   ########.fr        #
+#    Updated: 2022/09/20 13:48:53 by ddecourt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =	ft_containers
 
-CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address -std=c++98
+CFLAGS	=	-Wall -Wextra -Werror -g3 -std=c++98
 
 SRCS =	srcs/main.cpp \
 
@@ -21,7 +21,7 @@ SRCS_VECTOR = tests/vector/main_vector.cpp \
 CC	=	clang++
 RM	=	rm -f
 
-INCLUDES = -I./headers
+INCLUDES = -I./includes
 
 OBJS		:=	$(SRCS:.cpp=.o)
 

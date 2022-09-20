@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Reverse_Iterator.hpp                               :+:      :+:    :+:   */
+/*   reverse_iterator.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 00:00:35 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/06/22 00:38:01 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/09/14 16:08:29 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ namespace ft
 			
 			reverse_iterator() : _iter(NULL){};
 			explicit reverse_iterator(iterator_type type) : _iter(type) {};
+			~reverse_iterator() {}
 			
 			template<class Iter>
 			reverse_iterator (const reverse_iterator<Iter> &reverse_iterator) : _iter(reverse_iterator.base()){};
@@ -41,7 +42,8 @@ namespace ft
 			iterator_type base() const {return(_iter);};
 			
 			reference			operator*() const {Iterator i = _iter; return (*--i);};
-			pointer				operator->() const {return (std::addressof(operator*()));};
+			pointer				operator->() const {return &(operator*());};
+			
 			reverse_iterator	&operator++() const {--_iter; return (*this);};
 			reverse_iterator	&operator--() const {++_iter; return (*this);};
 			reverse_iterator	operator++(int) const {reverse_iterator i = *this; --(*this); return(i);};
