@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/09/20 15:14:05 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/10 16:04:21 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ namespace ft
 			void assign (InputIterator first, InputIterator last)
 			{
 				clear();
-				insert(begin(), first, last);
+				insert(this->begin(), first, last);
 			};
 			
 			void assign(size_type n, const value_type &value)
@@ -170,15 +170,10 @@ namespace ft
 				return _size;
 			};
 			
-			//Max size stack overflow answer
-			//https://stackoverflow.com/questions/3813124/c-vector-max-size#:~:text=max_size()%20is%20the%20theoretical,or%202%5E29%20double%20values.
 			//Returns the maximum number of elements that the vector can hold.
 			unsigned int			max_size() const   
 			{
 				return(_alloc.max_size());
-				/*if (sizeof(value_type) == 1)
-					return (pow(2.0, 64.0) / 2.0) - 1;
-				return (pow(2.0, 64.0) / static_cast<double>(sizeof(value_type))) - 1;*/
 			};
 			
 			//Function in case the memory allocated is not sufficient to add the new element, we need to reallocate.
@@ -229,7 +224,8 @@ namespace ft
 				}
 			};
 
-//___________________________________________________________________________________________________________________
+//_______________________________________________________________________________________________________________
+
 
 			
 			//**********************************************//
@@ -279,13 +275,11 @@ namespace ft
 				return (_vector[_size - 1]);
 			};
 			
-
 			
 			//*****************************************//
 			//Modifiers                                //
 			//*****************************************//
-			
-			
+
 
 			void push_back (const value_type& value)
 			{
@@ -308,52 +302,73 @@ namespace ft
 			
 			iterator insert (iterator position, const value_type& val)
 			{
-				size_type i = 0;
-				iterator j = begin();
-				while (j + i != position && i < _size)
-					i++;
-				if (_capacity < _size + 1)
-					reserve(_size + 1);
-				size_type k = _capacity - 1;
-				while (k > i)
+				size_type n_to_pos = position - this->begin();
+				if (this->_size + 1 > this->_capacity)
 				{
-					_vector[k] = _vector[k - 1];
-					k--;
+					if (this->_capacity == 0)
+						reserve(1);
+					else
+						reserve(this->_capacity * 2);
 				}
-				_vector[i] = val;
-				_size++;
-				return (iterator (&_vector[i]));
+				this->_size++;
+				for (size_type i = this->_size - 1; i > n_to_pos; i--)
+				{
+					this->_alloc.construct(&(this->_vector[i]), (this->_vector[i - 1]));
+					this->_alloc.destroy(&(this->_vector[i - 1]));
+				}
+				this->_alloc.construct(&(this->_vector[n_to_pos]), (val));
+				return (iterator(&this->_vector[n_to_pos]));
 			};
 			
 			void insert (iterator position, size_type n, const value_type& val)
 			{
-				while (n--)
+				if (this->_size + n > this->_capacity)
+				{
+					size_type	backup = position - this->begin();
+					if (this->_capacity == 0)
+						reserve(n);
+					else
+					{
+						if (this->_size * 2 >= this->_size + n)
+							reserve(this->_size * 2);
+						else
+							reserve(this->_size + n);
+					}
+					position = this->begin() + backup;
+				}
+				for (size_type i = 0; i < n; i++)
 					position = insert(position, val);
+				return;
 			};
 			
 			// typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL
 			template <class InputIterator>
 			void insert(iterator position, InputIterator begin, InputIterator end, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 			{
-								// vector tmp(*this);
-				// size_type n = 0;
-				// for (InputIterator it; it != end; it++)
-				// 	n++;
-				// size_type i = position - begin();
-				// _size += n;
-				// reserve(_size);
-				
-				// for (size_type j = i; j < i + n; ++j)
-				// 	_alloc.construct(_vector + j, *begin++);
-
-				// for (size_type j = i + n; j < _size; ++j)
-				// 	_alloc.construct(_vector + j, tmp[j - n]);
-		
-				while (begin != end)
+				size_type n = 0;
+				InputIterator temp = begin;
+				while (temp != end)
 				{
-					position = insert(position, *begin) + 1;
-					++begin;
+					temp++;
+					n++;
 				}
+				if (this->_size + n > this->_capacity)
+				{
+					size_type	backup = position - this->begin();
+					if (this->_capacity == 0)
+						reserve(n);
+					else
+					{
+						if (this->size * 2 >= this->_size + n)
+							reserve(this->_size * 2);
+						else
+							reserve(this->_size + n);
+					}
+					position = this->begin() + backup;
+				}
+				for (; begin != end; ++begin, ++position)
+					insert(position, *begin);
+				return;
 			};
 			
 			iterator erase (iterator position)
