@@ -6,73 +6,56 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 14:44:52 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/10 15:54:00 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/10 18:32:07 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
-
-//int main ()
-//{
-    //std::cout << "Hello world " << std::endl;
-    // ft::vector<std::string> vect2;
-
-    // vect2.push_back("Hello");
-    // vect2.push_back("Hola");
-    // std::cout << vect2[0] << std::endl;
-    // std::cout << vect2[1] << std::endl;
-    // vect2.insert(vect2.begin(), "Salut");
-    // std::cout << vect2[0] << std::endl;
-    // std::cout << vect2[1] << std::endl;
-    // //std::cout <<
-    // std::cout << vect2[2] << std::endl;
-
-
-
-
-//}
 
 #include "common.hpp"
 #include <iostream>
 #include "vector.hpp"
-#define TESTED_TYPE int
+#include <list>
+
+#define TESTED_TYPE foo<int>
 
 int		main(void)
 {
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(7);
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct_two(4);
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct_three;
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct_four;
+	const int size = 5;
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it(vct.begin());
+	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator ite(vct.end());
 
-	for (unsigned long int i = 0; i < vct.size(); ++i)
-		vct[i] = (vct.size() - i) * 3;
-	for (unsigned long int i = 0; i < vct_two.size(); ++i)
-		vct_two[i] = (vct_two.size() - i) * 5;
-	printSize(vct);
-	printSize(vct_two);
+	for (int i = 1; it != ite; ++i)
+		*it++ = i;
+	printSize(vct, 1);
 
-	vct_three.assign(vct.begin(), vct.end());
-	vct.assign(vct_two.begin(), vct_two.end());
-	vct_two.assign(2, 42);
-	vct_four.assign(4, 21);
+	it = vct.begin();
+	ite = vct.begin();
 
-	std::cout << "\t### After assign(): ###" << std::endl;
+	std::cout << *(++ite) << std::endl;
+	std::cout << *(ite++) << std::endl;
+	std::cout << *ite++ << std::endl;
+	std::cout << *++ite << std::endl;
 
-	printSize(vct);
-	printSize(vct_two);
-	printSize(vct_three);
-	printSize(vct_four);
+	it->m();
+	ite->m();
 
-	vct_four.assign(6, 84);
-	printSize(vct_four);
+	std::cout << *(++it) << std::endl;
+	std::cout << *(it++) << std::endl;
+	std::cout << *it++ << std::endl;
+	std::cout << *++it << std::endl;
 
-	std::cout << "\t### assign() on enough capacity and low size: ###" << std::endl;
+	std::cout << *(--ite) << std::endl;
+	std::cout << *(ite--) << std::endl;
+	std::cout << *--ite << std::endl;
+	std::cout << *ite-- << std::endl;
 
-	vct.assign(5, 53);
-	vct_two.assign(vct_three.begin(), vct_three.begin() + 3);
+	(*it).m();
+	(*ite).m();
 
-	printSize(vct);
-	printSize(vct_two);
+	std::cout << *(--it) << std::endl;
+	std::cout << *(it--) << std::endl;
+	std::cout << *it-- << std::endl;
+	std::cout << *--it << std::endl;
 
 	return (0);
 }

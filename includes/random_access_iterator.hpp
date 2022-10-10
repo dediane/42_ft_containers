@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 21:59:10 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/09/04 23:09:56 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/10 18:41:07 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,14 @@ namespace ft {
 			random_access_iterator() : _ptr(NULL) {}
 			random_access_iterator(pointer ptr) : _ptr(ptr) {}
 			random_access_iterator(const random_access_iterator& src) : _ptr(src._ptr) {}
+			random_access_iterator & operator=(random_access_iterator const &rhs) {_ptr = rhs._ptr; return *this;}
 			~random_access_iterator() {}
-			
 			
 			reference operator*() {return *_ptr;};
 			const_reference operator*() const {return *_ptr;};
 			pointer	operator->() {return *(&_ptr);};
 			const_pointer operator->() const {return *(&_ptr);};
 			
-			random_access_iterator& operator=(const random_access_iterator&src)
-			{
-				if (this == &src)
-					return *this;
-				this->_ptr = src._ptr;
-				return *this;
-			};
 			
 			random_access_iterator& operator++(void) {*this += 1;return *this;};
 			random_access_iterator operator++(int) {random_access_iterator<T>	copy = *this;++*this;return copy;};

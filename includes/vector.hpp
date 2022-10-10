@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/10 16:04:21 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/10 18:30:30 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ namespace ft
 			typedef ft::random_access_iterator<value_type>			iterator;
 			typedef ft::random_access_iterator<const value_type>	const_iterator;
 			typedef ft::reverse_iterator<iterator>					reverse_iterator;
-			typedef ft::reverse_iterator<const iterator>			const_reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 			
 			typedef typename ft::iterator_traits<iterator>::difference_type	difference_type;
 			typedef typename allocator_type::size_type				size_type;
@@ -87,9 +87,11 @@ namespace ft
 			};
 			
 			//Constructs a container with as many elements as the range [first,last), with each element constructed from its corresponding element in that range, in the same order.
+			//,
 			template <class InputIterator>
-			vector(InputIterator begin, InputIterator end, const allocator_type &allocator = allocator_type(),
-			typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL):  _alloc(allocator), _vector(0), _size(0), _capacity(0)
+			vector(InputIterator begin, InputIterator end, const allocator_type &allocator = allocator_type()) :
+			//typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL):
+			_alloc(allocator), _vector(0), _size(0), _capacity(0)
 			{
 				_vector = _alloc.allocate(0);
 				assign(begin, end);
@@ -111,27 +113,41 @@ namespace ft
 			
 			vector &operator=(const vector &other)
 			{
-				if (_alloc != 0)
-					_alloc.deallocate(_alloc, _capacity);
-				_alloc = other._alloc;
-				_capacity = 0;
-				_size = 0;
-				_vector = _alloc.allocate(0);
-				assign(other.begin(), other.end());
+				vector	temp(other);
+				this->swap(temp);
 				return (*this);
 			};
 		
 			template <class InputIterator>
-			void assign (InputIterator first, InputIterator last)
+			void assign(InputIterator first, InputIterator last)
+			//, typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type* = NULL)
 			{
-				clear();
-				insert(this->begin(), first, last);
+				size_type n = 0;
+				InputIterator temp = first;
+				while (temp != last)
+				{
+					n++;
+					temp++;
+				}
+				this->clear();
+				this->reserve(n);
+				for (; first != last; ++first)
+				{
+					this->_alloc.construct(&this->_vector[_size], *first);
+					this->_size++;
+				}
+			return ;
 			};
 			
-			void assign(size_type n, const value_type &value)
+			void assign(size_type n, const value_type& value)
 			{
-				clear();
-				insert(begin(), n, value);
+				if ( n > this->_capacity)
+					reserve(n);
+				for (size_type i = 0; i < this->_size; i++)
+					_alloc.destroy(&_vector[i]);
+				for (size_type i = 0; i < n ; i++)
+					_alloc.construct(&_vector[i], value);
+				_size = n;
 			};
 
 
@@ -181,7 +197,7 @@ namespace ft
 			//If we want to resize smaller we just have to remove extra space.
 			//Otherwise we need to insert it.
 			//Resizes the container so that it contains alloc_size elements.
-			void					resize(size_type alloc_size, value_type value)
+			void					resize(size_type alloc_size, value_type value = value_type())
 			{
 				while (alloc_size < _size)
 					pop_back();
@@ -192,9 +208,9 @@ namespace ft
 			
 			//Returns the size of the storage space currently allocated 
 			//for the vector, expressed in terms of elements.
-			unsigned int			capacity()
+			size_type			capacity() const
 			{
-				return (_capacity);
+				return (this->_capacity);
 			};
 			
 			
@@ -233,15 +249,15 @@ namespace ft
 			//**********************************************//
 			reference			at(size_type pos)
 			{
-				if (pos >= _size)
-					throw std::out_of_range("vector");
+				if (pos >= this->_size)
+					throw std::out_of_range("out of range");
 				return (_vector[pos]);
 			};
 
 			const_reference		at(size_type pos) const
 			{
-				if (pos >= _size)
-					throw std::out_of_range("vector");
+				if (pos >= this->_size)
+					throw std::out_of_range("out of range");
 				return (_vector[pos]);
 			};
 			
@@ -300,7 +316,7 @@ namespace ft
 				_alloc.destroy(&_vector[_size]);
 			};
 			
-			iterator insert (iterator position, const value_type& val)
+			iterator insert(iterator position, const value_type& val)
 			{
 				size_type n_to_pos = position - this->begin();
 				if (this->_size + 1 > this->_capacity)
@@ -320,7 +336,7 @@ namespace ft
 				return (iterator(&this->_vector[n_to_pos]));
 			};
 			
-			void insert (iterator position, size_type n, const value_type& val)
+			void insert(iterator position, size_type n, const value_type& val)
 			{
 				if (this->_size + n > this->_capacity)
 				{
@@ -341,9 +357,8 @@ namespace ft
 				return;
 			};
 			
-			// typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL
 			template <class InputIterator>
-			void insert(iterator position, InputIterator begin, InputIterator end, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
+			void insert(iterator position, InputIterator begin, InputIterator end, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL)
 			{
 				size_type n = 0;
 				InputIterator temp = begin;
@@ -359,7 +374,7 @@ namespace ft
 						reserve(n);
 					else
 					{
-						if (this->size * 2 >= this->_size + n)
+						if (this->_size * 2 >= this->_size + n)
 							reserve(this->_size * 2);
 						else
 							reserve(this->_size + n);
@@ -393,10 +408,18 @@ namespace ft
 				return (iterator(first));
 			};
 			
-			// void swap (vector& x)
-			// {
-				
-			// }
+			void swap (vector& a)
+			{
+				value_type *x_vector = this->_vector;
+				size_type	x_capacity = this->_capacity;
+				size_type	x_size = this->_size;
+				this->_vector = a._vector;
+				this->_capacity = a._capacity;
+				this->_size = a._size;
+				a._vector = x_vector;
+				a._capacity = x_capacity;
+				a._size = x_size;
+			}
 			
 			void clear()
 			{
