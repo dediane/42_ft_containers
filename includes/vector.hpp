@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/10 18:30:30 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/14 17:33:49 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,11 @@ namespace ft
 			vector(const vector &rhs)
 			:  _alloc(rhs._alloc), _vector(0), _size(0), _capacity(0)
 			{
-				*this = rhs;
+				for (size_type i = 0; i < _size; i++)
+				{
+					_alloc.construct(&_vector[i], rhs._vector[i]);
+				}
+				//*this = rhs;
 			};
 			
 			~vector(void)
@@ -119,8 +123,9 @@ namespace ft
 			};
 		
 			template <class InputIterator>
-			void assign(InputIterator first, InputIterator last)
-			//, typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type* = NULL)
+			typename ft::enable_if<!is_integral<InputIterator>::value, void>::type
+			assign(InputIterator first, InputIterator last)
+
 			{
 				size_type n = 0;
 				InputIterator temp = first;
@@ -215,7 +220,7 @@ namespace ft
 			
 			
 			 //Returns whether the vector is empty 
-			bool					empty()
+			bool					empty() const
 			{
 				return (_size == 0);
 			};
@@ -426,17 +431,17 @@ namespace ft
 				erase(begin(), end());
 			};
 	};
-	
+
 	//*****************************************//
 	//Operators                                //
 	//*****************************************//
-	
+
 	template <class T, class Alloc>
 	bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
 			if (lhs.size() != rhs.size())
 					return false;
-				return equal(lhs.begin(), lhs.end(), rhs.begin());
+				return std::equal(lhs.begin(), lhs.end(), rhs.begin());
 	}
 
 	template <class T, class Alloc>

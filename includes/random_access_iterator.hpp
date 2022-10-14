@@ -6,15 +6,16 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 21:59:10 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/10 18:41:07 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/14 17:26:55 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RANDOM_ACCESS_ITERATOR
 # define RANDOM_ACCESS_ITERATOR
 
-# include <cstddef>
-# include <iterator>
+#include <cstddef>
+#include <iterator>
+#include <algorithm>
 
 namespace ft {
 	template<typename T>class random_access_iterator
@@ -35,6 +36,7 @@ namespace ft {
 		public:
 			random_access_iterator() : _ptr(NULL) {}
 			random_access_iterator(pointer ptr) : _ptr(ptr) {}
+			operator random_access_iterator<const T>() const { return random_access_iterator<const T>(_ptr);}
 			random_access_iterator(const random_access_iterator& src) : _ptr(src._ptr) {}
 			random_access_iterator & operator=(random_access_iterator const &rhs) {_ptr = rhs._ptr; return *this;}
 			~random_access_iterator() {}
