@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 21:59:10 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/14 17:26:55 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/14 18:47:13 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,32 @@ namespace ft {
 			random_access_iterator operator--(int) {random_access_iterator<T>	copy = *this;--*this;return copy;};
 			random_access_iterator& operator+=(const difference_type n) {_ptr += n;return *this;};
 			random_access_iterator& operator-=(const difference_type n) {_ptr -= n;return *this;};
-			random_access_iterator operator+(const difference_type n) {random_access_iterator<T>	copy = *this;copy += n;return copy;};
-			random_access_iterator operator-(const difference_type n) {random_access_iterator<T>	copy = *this;copy -= n;return copy;};
-			difference_type operator-(const random_access_iterator&other) const{return this->_ptr - other._ptr;};
+			
+			random_access_iterator operator+(difference_type n) 
+			{
+				random_access_iterator<T>	copy = *this;
+				copy += n;
+				return copy;
+			};
+			
+			friend random_access_iterator operator+(difference_type n, random_access_iterator<T> it) 
+			{
+				random_access_iterator<T>	copy = it._ptr;
+				copy += n;
+				return copy;
+			};
+
+			random_access_iterator operator-(difference_type n) 
+			{
+				random_access_iterator<T>	copy = *this;
+				copy -= n;
+				return copy;
+			};
+
+			difference_type operator-(const random_access_iterator &other) const
+			{
+				return this->_ptr - other._ptr;
+			};
 
 			reference operator[](difference_type n) const{return *(_ptr + n);};	
 	};
@@ -84,9 +107,9 @@ namespace ft {
 	bool operator>=(const random_access_iterator<T1> &lhs, const random_access_iterator<T2> &rhs)
 	{return !(lhs < rhs);}
 
-	template<typename T>
-	random_access_iterator<T> operator+(typename ft::random_access_iterator<T>::difference_type n,const random_access_iterator<T>& other) 
-	{return other + n;}
+	// template<typename T>
+	// random_access_iterator<T> operator+(typename ft::random_access_iterator<T>::difference_type n,const random_access_iterator<T>& other) 
+	// {return other + n;}
 }
 
 #endif

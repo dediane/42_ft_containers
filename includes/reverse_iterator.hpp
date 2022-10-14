@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 00:00:35 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/14 17:24:47 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/14 18:50:17 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define REVERSE_ITERATOR_HPP
 
 #include "iterator_traits.hpp"
+#include "random_access_iterator.hpp"
 #include <memory>
 
 namespace ft
@@ -39,22 +40,25 @@ namespace ft
 			template<class Iter>
 			reverse_iterator (const reverse_iterator<Iter> &reverse_iterator) : _iter(reverse_iterator.base()){};
 			
-			//operator reverse_iterator<random_access_iterator<value_type const>>() const { return reverse_iterator<random_access_iterator<value_type const>>(_iter);}
+			operator reverse_iterator<random_access_iterator<value_type const> > () const { return reverse_iterator<random_access_iterator<value_type const> >(_iter);}
+			operator reverse_iterator<random_access_iterator<value_type > > () { return reverse_iterator<random_access_iterator<value_type> >(_iter);}
+
 			
 			iterator_type base() const {return(_iter);};
 			
 			reference			operator*() const {Iterator i = _iter; return (*--i);};
 			pointer				operator->() const {return &(operator*());};
 			
-			reverse_iterator	&operator++() const {--_iter; return (*this);};
-			reverse_iterator	&operator--() const {++_iter; return (*this);};
-			reverse_iterator	operator++(int) const {reverse_iterator i = *this; --(*this); return(i);};
-			reverse_iterator	operator--(int) const {reverse_iterator i = *this; ++(*this); return(i);};
+			reverse_iterator	&operator++() {--_iter; return (*this);};
+			reverse_iterator	&operator--() {++_iter; return (*this);};
+			reverse_iterator	operator++(int) {reverse_iterator i = *this; --(*this); return(i);};
+			reverse_iterator	operator--(int) {reverse_iterator i = *this; ++(*this); return(i);};
 			reverse_iterator	operator+(difference_type n) const {return (reverse_iterator(base() - n));};
 			reverse_iterator	operator-(difference_type n) const {return (reverse_iterator(base() + n));};
-			reverse_iterator	&operator+=(difference_type n) const {_iter -= n; return(*this);};
-			reverse_iterator	&operator-=(difference_type n) const {_iter += n; return(*this);};
+			reverse_iterator	&operator+=(difference_type n) {_iter -= n; return(*this);};
+			reverse_iterator	&operator-=(difference_type n) {_iter += n; return(*this);};
 			reference			operator[](difference_type n) const {return (base()[-n -1]);};
+			
 			
 	};
 			
@@ -100,11 +104,12 @@ namespace ft
 	template <class Iterator>
 	reverse_iterator<Iterator>operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& rev_it)
 	{
-			return reverse_iterator<Iterator>(rev_it.base() - n);
+			return rev_it + n;
 	}
 
-	template <class Iterator>
-	typename reverse_iterator<Iterator>::difference_type operator- (const reverse_iterator<Iterator>& lhs, const reverse_iterator<Iterator>& rhs)
+	template <typename T1, typename T2>
+	typename reverse_iterator<T1>::difference_type 
+	operator- (reverse_iterator<T1> const & lhs, reverse_iterator<T2> const & rhs)
 	{
 			return lhs.base() - rhs.base();
 	}

@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 14:44:52 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/14 17:37:26 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/14 18:42:45 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include <iostream>
 #include "vector.hpp"
 #include <list>
-
-#include "common.hpp"
 
 #define TESTED_TYPE int
 
