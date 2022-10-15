@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/15 14:13:03 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/15 15:45:41 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ namespace ft
 			//Constructs a container with as many elements as the range [first,last), with each element constructed from its corresponding element in that range, in the same order.
 			//,
 			template <class InputIterator>
+			// typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL:
 			vector(InputIterator begin, InputIterator end, const allocator_type &allocator = allocator_type()) :
-			//typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = NULL):
 			_alloc(allocator), _vector(0), _size(0), _capacity(0)
 			{
 				_vector = _alloc.allocate(0);
@@ -101,6 +101,8 @@ namespace ft
 			vector(const vector &rhs)
 			:  _alloc(rhs._alloc), _vector(0), _size(0), _capacity(0)
 			{
+				_size = rhs.size();
+				_vector = _alloc.allocate(_size);
 				for (size_type i = 0; i < _size; i++)
 				{
 					_alloc.construct(&_vector[i], rhs._vector[i]);
