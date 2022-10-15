@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/14 17:33:49 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/15 14:13:03 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,11 +170,11 @@ namespace ft
 			iterator				end() {return iterator(_vector + _size);};
 			const_iterator			end() const {return const_iterator(_vector + _size);};
 			
-			reverse_iterator		rbegin() {return reverse_iterator(_vector + _size - 1);};
-			const_reverse_iterator	rbegin() const {return const_reverse_iterator(_vector + _size - 1);};
+			reverse_iterator		rbegin() {return reverse_iterator(end());};
+			const_reverse_iterator	rbegin() const {return const_reverse_iterator(end());};
 			
-			reverse_iterator		rend() {return reverse_iterator(_vector - 1);};
-			const_reverse_iterator	rend() const {return const_reverse_iterator(_vector - 1);};
+			reverse_iterator		rend() {return reverse_iterator(begin());};
+			const_reverse_iterator	rend() const {return const_reverse_iterator(begin());};
 
 
 //___________________________________________________________________________________________________________________
@@ -268,11 +268,15 @@ namespace ft
 			
 			reference			operator[](size_type pos) 
 			{
+				if (pos >= this->_size)
+					throw std::out_of_range("out of range");
 				return (_vector[pos]);
 			};
 			
 			const_reference		operator[](size_type pos) const 
 			{
+				if (pos >= this->_size)
+					throw std::out_of_range("out of range");
 				return (_vector[pos]);
 			};
 
@@ -453,7 +457,7 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
-		return (lhs < rhs);
+		return &(lhs) < &(rhs);
 	}
 
 	template <class T, class Alloc>
@@ -465,7 +469,7 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
-		return (lhs > rhs);
+		return &(lhs) > (&rhs);
 	}
 		
 	template <class T, class Alloc>

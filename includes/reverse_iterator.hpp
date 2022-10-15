@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 00:00:35 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/14 18:50:17 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/15 15:17:35 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ namespace ft
 			Iterator _iter;
 
 		public:
-			typedef Iterator													iterator_type;
+			typedef Iterator												iterator_type;
 			typedef typename iterator_traits<Iterator>::iterator_category	iterator_category;
 			typedef typename iterator_traits<Iterator>::value_type			value_type;
 			typedef typename iterator_traits<Iterator>::difference_type		difference_type;
@@ -43,7 +43,6 @@ namespace ft
 			operator reverse_iterator<random_access_iterator<value_type const> > () const { return reverse_iterator<random_access_iterator<value_type const> >(_iter);}
 			operator reverse_iterator<random_access_iterator<value_type > > () { return reverse_iterator<random_access_iterator<value_type> >(_iter);}
 
-			
 			iterator_type base() const {return(_iter);};
 			
 			reference			operator*() const {Iterator i = _iter; return (*--i);};
@@ -58,10 +57,7 @@ namespace ft
 			reverse_iterator	&operator+=(difference_type n) {_iter -= n; return(*this);};
 			reverse_iterator	&operator-=(difference_type n) {_iter += n; return(*this);};
 			reference			operator[](difference_type n) const {return (base()[-n -1]);};
-			
-			
 	};
-			
 			
 		template <typename T1, typename T2>
 	bool operator==(const reverse_iterator<T1> &lhs, const reverse_iterator<T2> &rhs) 
