@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 23:59:20 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/17 17:29:09 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/17 18:25:22 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ namespace ft {
 	
 	//https://cplusplus.com/reference/map/map/
     template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key,T> > >
-    class map
-	{
+     class map
+	 {
 		public:
 			typedef Key															key_type;
 			typedef T															mapped_type;
 			typedef ft::pair<key_type, mapped_type>								value_type;
-			typedef Compare														key_compare;
+	 		typedef Compare														key_compare;
 			typedef Alloc														allocator_type;
 			typedef typename allocator_type::size_type							size_type;
 			typedef typename allocator_type::difference_type					difference_type;
@@ -71,49 +71,49 @@ namespace ft {
 					bool operator() (const value_type& x, const value_type& y) const {return comp(x.first, y.first);}
 			};
 
-		protected:
+	 	protected:
 		 	node_allocator _alloc_type;
 			key_compare _key_compare;
 			size_type _size_type;
 			node_type *_base;
 
-		public:
-			/***********************************/
-			/*         Constructors            */
-			/***********************************/
+	public:
+		/***********************************/
+		/*         Constructors            */
+		/***********************************/
 
-			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _alloc_type(alloc), _key_compare(comp), _size(0), _base(NULL){};
+		// explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _alloc_type(alloc), _key_compare(comp), _size(0), _base(NULL){};
 
-			template <class InputIterator>
-			map (typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _alloc_type(alloc), _key_compare(comp), _size(0), _base(NULL)
-			{insert(first, last);};
+		// template <class InputIterator>
+		// map (typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _alloc_type(alloc), _key_compare(comp), _size(0), _base(NULL)
+		// {insert(first, last);};
 
-			map (const map& x) : _alloc_type(x._alloc_type), _key_compare(x._key_compare), _size(0), _root(NULL){*this = x;};
+		// map (const map& x) : _alloc_type(x._alloc_type), _key_compare(x._key_compare), _size(0), _root(NULL){*this = x;};
 
-			~map()
-			{
+		// ~map()
+		// {
 				
-			}
+		// }
 
-			map& operator= (const map& x)
-			{
+		// map& operator= (const map& x)
+		// {
 				
-			}
+		// }
 
-			/*************************************/
-			/*            Iterators              */
-			/*************************************/
+		// /*************************************/
+		// /*            Iterators              */
+		// /*************************************/
 
-			iterator begin();const_iterator begin() const
-			{
+		// iterator begin();const_iterator begin() const
+		// {
 				
-			}
+		// }
 			
-			iterator end();const_iterator end() const
-			{
+		// iterator end();const_iterator end() const
+		// {
 				
-			}
+		// }
 			 
-	};
-}
+	 };
+ }
 #endif

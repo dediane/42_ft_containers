@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/15 15:45:41 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/17 18:29:06 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ namespace ft
 			typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 			
 			typedef typename ft::iterator_traits<iterator>::difference_type	difference_type;
-			typedef typename allocator_type::size_type				size_type;
+			typedef typename std::size_t							size_type;
 			
 		private:
 			Alloc				_alloc;
@@ -188,13 +188,13 @@ namespace ft
 			//**********************************************//
 			
 			//Functionnal memory part
-			unsigned int			size() const   //Returns the number of elements in the vector.
+			unsigned int	size() const   //Returns the number of elements in the vector.
 			{
 				return _size;
 			};
 			
 			//Returns the maximum number of elements that the vector can hold.
-			unsigned int			max_size() const   
+			long			max_size() const   
 			{
 				return(_alloc.max_size());
 			};
