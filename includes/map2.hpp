@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map.hpp                                            :+:      :+:    :+:   */
+/*   map2.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 23:59:20 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/17 17:29:09 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/17 17:42:55 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,6 @@
 #include "utils/is_integral.hpp"
 
 namespace ft {
-
-	template <typename V>
-	struct node {
-		V value;
-		node *left;
-		node *right;
-		node *parent;
-		bool last;
-		node(V value, node *left, node *right, node *parent, bool last = false) : value(value), left(left), right(right), parent(parent), last(last) {}
-		~node() {}
-	};
-	
-	//https://cplusplus.com/reference/map/map/
     template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key,T> > >
     class map
 	{
@@ -45,16 +32,15 @@ namespace ft {
 			typedef ft::pair<key_type, mapped_type>								value_type;
 			typedef Compare														key_compare;
 			typedef Alloc														allocator_type;
-			typedef typename allocator_type::size_type							size_type;
-			typedef typename allocator_type::difference_type					difference_type;
+			typedef size_t														size_type;
+			typedef ptrdiff_t													difference_type;
 			typedef typename allocator_type::reference							reference;
 			typedef typename allocator_type::const_reference					const_reference;
 			typedef typename allocator_type::pointer							pointer;
 			typedef typename allocator_type::const_pointer						const_pointer;
-			typedef node<value_type>						node_type;
-			typedef typename allocator_type::template rebind<node_type>::other	node_allocator;
-			typedef map_iterator<value_type, node_type*>						iterator;
-			typedef map_iterator<const value_type, node_type*>					const_iterator;
+			typedef ft::red_black_tree<value_type, key_type, key_compare, allocator_type> tree_type;
+			typedef tree_type::iterator											iterator;
+			typedef tree_type::const_iterator									const_iterator;
 			typedef ft::reverse_iterator<iterator>								reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>						const_reverse_iterator;
 			
@@ -65,9 +51,6 @@ namespace ft {
 					key_compare comp;
 					value_compare (key_compare c) : comp(c) {}
 				public:
-					typedef bool result_type;
-					typedef value_type first_argument_type;
-					typedef value_type second_argument_type;
 					bool operator() (const value_type& x, const value_type& y) const {return comp(x.first, y.first);}
 			};
 
