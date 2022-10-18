@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:58:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/17 18:00:04 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/18 14:43:07 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@
 
 namespace ft
 {
-
-template <class T>
-struct Node {
   typedef T     value_type;
-  value_type    value;
-  Node          *parent;
-  Node          *left;
-  Node          *right;
-  bool          color;
 
-  Node(value_type const &value) : value(value) {}
+  template <class T>
+  struct Node {
+    value_type    data;
+    Node          *parent;
+    Node          *left;
+    Node          *right;
+    bool          color;
+
+  NodePtr(value_type const &value) : value(value) {}
 };
 
 

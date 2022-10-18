@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/17 18:29:06 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/18 14:28:42 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,13 +188,13 @@ namespace ft
 			//**********************************************//
 			
 			//Functionnal memory part
-			unsigned int	size() const   //Returns the number of elements in the vector.
+			size_type	size() const   //Returns the number of elements in the vector.
 			{
 				return _size;
 			};
 			
 			//Returns the maximum number of elements that the vector can hold.
-			long			max_size() const   
+			size_type	max_size() const   
 			{
 				return(_alloc.max_size());
 			};

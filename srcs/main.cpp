@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 14:44:52 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/17 15:48:23 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/18 15:00:42 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,41 @@
 #include "map.hpp"
 #include "stack.hpp"
 #include <list>
+
+#define TESTED_TYPE foo<int>
+#define t_stack_ TESTED_NAMESPACE::stack<TESTED_TYPE>
+typedef t_stack_::container_type container_type;
+
+int		main(void)
+{
+	container_type	ctnr;
+
+	ctnr.push_back(21);
+	ctnr.push_back(42);
+	ctnr.push_back(1337);
+	ctnr.push_back(19);
+	ctnr.push_back(0);
+	ctnr.push_back(183792);
+
+	t_stack_		stck(ctnr);
+
+	std::cout << "empty: " << stck.empty() << std::endl;
+	std::cout << "size: " << stck.size() << std::endl;
+
+	stck.push(1);
+	stck.push(2);
+	stck.push(3);
+	stck.push(4);
+	stck.push(5);
+	stck.push(6);
+
+	std::cout << "Added some elements" << std::endl;
+
+	std::cout << "empty: " << stck.empty() << std::endl;
+	//printSize(stck);
+
+	return (0);
+}
 
 
 /************************************************/
@@ -71,32 +106,32 @@
 /************************************************/
 
 
-#define TESTED_TYPE foo<int>
+// #define TESTED_TYPE foo<int>
 
-template <typename Ite_1, typename Ite_2>
-void ft_eq_ope(const Ite_1 &first, const Ite_2 &second, const bool redo = 1)
-{
-	std::cout << (first < second) << std::endl;
-	std::cout << (first <= second) << std::endl;
-	std::cout << (first > second) << std::endl;
-	std::cout << (first >= second) << std::endl;
-	if (redo)
-		ft_eq_ope(second, first, 0);
-}
+// template <typename Ite_1, typename Ite_2>
+// void ft_eq_ope(const Ite_1 &first, const Ite_2 &second, const bool redo = 1)
+// {
+// 	std::cout << (first < second) << std::endl;
+// 	std::cout << (first <= second) << std::endl;
+// 	std::cout << (first > second) << std::endl;
+// 	std::cout << (first >= second) << std::endl;
+// 	if (redo)
+// 		ft_eq_ope(second, first, 0);
+// }
 
-int		main(void)
-{
-	const int size = 5;
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it_0(vct.rbegin());
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it_1(vct.rend());
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it_mid;
+// int		main(void)
+// {
+// 	const int size = 5;
+// 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
+// 	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it_0(vct.rbegin());
+// 	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it_1(vct.rend());
+// 	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it_mid;
 
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator cit_0 = vct.rbegin();
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator cit_1;
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator cit_mid;
+// 	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator cit_0 = vct.rbegin();
+// 	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator cit_1;
+// 	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator cit_mid;
 
-	 for (int i = size; it_0 != it_1; --i)
+// 	 for (int i = size; it_0 != it_1; --i)
 	//  	*it_0++ = i;
 	// printSize(vct, 1);
 	// it_0 = vct.rbegin();
@@ -124,8 +159,8 @@ int		main(void)
 	// ft_eq_ope(it_1 - 3, cit_mid);
 	// ft_eq_ope(it_mid, cit_1 - 3);
 
-	return (0);
-}
+// 	return (0);
+// }
 
 /************************************************/
 /*        MAIN vector/rite_arrow.cpp            */

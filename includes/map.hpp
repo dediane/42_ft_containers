@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 23:59:20 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/17 18:25:22 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/18 14:47:59 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ namespace ft {
 	};
 	
 	//https://cplusplus.com/reference/map/map/
-    template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key,T> > >
-     class map
-	 {
+	template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key,T> > >
+	class map
+	{
 		public:
 			typedef Key															key_type;
 			typedef T															mapped_type;
@@ -71,13 +71,13 @@ namespace ft {
 					bool operator() (const value_type& x, const value_type& y) const {return comp(x.first, y.first);}
 			};
 
-	 	protected:
-		 	node_allocator _alloc_type;
+		protected:
+			node_allocator _alloc_type;
 			key_compare _key_compare;
 			size_type _size_type;
 			node_type *_base;
 
-	public:
+		public:
 		/***********************************/
 		/*         Constructors            */
 		/***********************************/
@@ -113,7 +113,6 @@ namespace ft {
 		// {
 				
 		// }
-			 
-	 };
+	};
  }
 #endif
