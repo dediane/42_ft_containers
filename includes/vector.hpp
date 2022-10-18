@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/18 14:28:42 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/18 18:10:21 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 #include "iterator_traits.hpp"
 #include "utils/enable_if.hpp"
 #include "utils/is_integral.hpp"
+#include "utils/lexicographical_compare.hpp"
 
 namespace ft
 {
@@ -81,7 +82,7 @@ namespace ft
 			explicit vector(size_type n, const value_type &value = value_type(), const allocator_type &allocator = allocator_type())
 			: _alloc(allocator), _vector(NULL), _size(n), _capacity(n)
 			{
-				_vector = _alloc.allocate(n);
+				_vector = _alloc.allocate(_capacity);
 				for (size_type i = 0; i < n; i++)
 					_alloc.construct(&_vector[i], value);
 			};
@@ -99,13 +100,16 @@ namespace ft
 			
 			//Constructs a container with a copy of each of the elements in x, in the same order.
 			vector(const vector &rhs)
-			:  _alloc(rhs._alloc), _vector(0), _size(0), _capacity(0)
+			:  _alloc(rhs._alloc), _vector(NULL), _size(0), _capacity(rhs._capacity)
 			{
-				_size = rhs.size();
-				_vector = _alloc.allocate(_size);
-				for (size_type i = 0; i < _size; i++)
+				if(rhs._vector)
 				{
-					_alloc.construct(&_vector[i], rhs._vector[i]);
+					_size = rhs.size();
+					_vector = _alloc.allocate(_capacity);
+					for (size_type i = 0; i < _size ; i++)
+					{
+						_alloc.construct(&_vector[i], rhs._vector[i]);
+					}
 				}
 				//*this = rhs;
 			};
@@ -402,7 +406,7 @@ namespace ft
 				iterator tmp = position;
 				while (tmp + 1 != end())
 				{
-					*tmp = *(position + 1);
+					*tmp = *(tmp + 1);
 					tmp++;
 				}
 				_size--;
@@ -459,7 +463,8 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
-		return &(lhs) < &(rhs);
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end() );
+		//return &(lhs) < &(rhs);
 	}
 
 	template <class T, class Alloc>
@@ -471,7 +476,7 @@ namespace ft
 	template <class T, class Alloc>
 	bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
-		return &(lhs) > (&rhs);
+		return !(lhs < rhs) && lhs != rhs;
 	}
 		
 	template <class T, class Alloc>

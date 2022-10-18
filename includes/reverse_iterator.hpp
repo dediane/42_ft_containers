@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 00:00:35 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/15 15:17:35 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/18 18:31:07 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,17 @@ namespace ft
 			reference			operator*() const {Iterator i = _iter; return (*--i);};
 			pointer				operator->() const {return &(operator*());};
 			
-			reverse_iterator	&operator++() {--_iter; return (*this);};
-			reverse_iterator	&operator--() {++_iter; return (*this);};
-			reverse_iterator	operator++(int) {reverse_iterator i = *this; --(*this); return(i);};
-			reverse_iterator	operator--(int) {reverse_iterator i = *this; ++(*this); return(i);};
+			reverse_iterator	&operator=(reverse_iterator const &lhs)
+			{
+				if (*this == lhs)
+					return *this;
+				_iter = lhs._iter;
+				return *this;
+			};
+			reverse_iterator	&operator++() {_iter--; return (*this);};
+			reverse_iterator	&operator--() {_iter++; return (*this);};
+			reverse_iterator	operator++(int) {reverse_iterator i = *this; _iter--; return(i);};
+			reverse_iterator	operator--(int) {reverse_iterator i = *this; _iter++; return(i);};
 			reverse_iterator	operator+(difference_type n) const {return (reverse_iterator(base() - n));};
 			reverse_iterator	operator-(difference_type n) const {return (reverse_iterator(base() + n));};
 			reverse_iterator	&operator+=(difference_type n) {_iter -= n; return(*this);};
