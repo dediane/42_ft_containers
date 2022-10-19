@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 14:44:52 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/19 15:17:02 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/19 17:21:57 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,37 +15,56 @@
 #include "vector.hpp"
 #include "map.hpp"
 #include "stack.hpp"
+#include "red_black_tree.hpp"
 #include <list>
 
 
-#define TESTED_TYPE int
+int main() {
 
-int		main(void)
-{
-	const int size = 5;
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it = vct.rbegin();
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator ite = vct.rbegin();
 
-	for (int i = 0; i < size; ++i)
-		it[i] = (size - i) * 5;
+  ft::RedBlackTree bst;
+  bst.insert(55);
+  bst.insert(40);
+  bst.insert(65);
+  bst.insert(60);
+  bst.insert(75);
+  bst.insert(57);
 
-	it = it + 5;
-	it = 1 + it;
-	it = it - 4;
-	std::cout << *(it += 2) << std::endl;
-	std::cout << *(it -= 1) << std::endl;
-
-	*(it -= 2) = 42;
-	*(it += 2) = 21;
-
-	std::cout << "const_ite +=/-=: " << *(ite += 2) << " | " << *(ite -= 2) << std::endl;
-
-	std::cout << "(it == const_it): " << (ite == it) << std::endl;
-	std::cout << "(const_ite - it): " << (ite - it) << std::endl;
-	std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
-
-	printSize(vct, true);
-	return (0);
+  bst.printTree();
+  std::cout << std::endl
+     << "After deleting" << std::endl;
+  bst.deleteNode(40);
+  bst.printTree();
 }
+
+// #define TESTED_TYPE int
+
+// int		main(void)
+// {
+// 	const int size = 5;
+// 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
+// 	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it = vct.rbegin();
+// 	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator ite = vct.rbegin();
+
+// 	for (int i = 0; i < size; ++i)
+// 		it[i] = (size - i) * 5;
+
+// 	it = it + 5;
+// 	it = 1 + it;
+// 	it = it - 4;
+// 	std::cout << *(it += 2) << std::endl;
+// 	std::cout << *(it -= 1) << std::endl;
+
+// 	*(it -= 2) = 42;
+// 	*(it += 2) = 21;
+
+// 	std::cout << "const_ite +=/-=: " << *(ite += 2) << " | " << *(ite -= 2) << std::endl;
+
+// 	std::cout << "(it == const_it): " << (ite == it) << std::endl;
+// 	std::cout << "(const_ite - it): " << (ite - it) << std::endl;
+// 	std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
+
+// 	printSize(vct, true);
+// 	return (0);
+// }
 
