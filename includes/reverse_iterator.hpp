@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 00:00:35 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/18 18:31:07 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/19 15:41:06 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ namespace ft
 			reverse_iterator	&operator+=(difference_type n) {_iter -= n; return(*this);};
 			reverse_iterator	&operator-=(difference_type n) {_iter += n; return(*this);};
 			reference			operator[](difference_type n) const {return (base()[-n -1]);};
+
 	};
 			
 		template <typename T1, typename T2>
@@ -94,7 +95,7 @@ namespace ft
 	bool operator>(const reverse_iterator<T1> &lhs, const
 	reverse_iterator<T2> &rhs)
 	{
-		return lhs.base() > rhs.base();
+		return !(lhs.base() > rhs.base()) && !(lhs.base() == rhs.base() );
 	}
 
 	template <typename T1, typename T2>
@@ -112,9 +113,9 @@ namespace ft
 
 	template <typename T1, typename T2>
 	typename reverse_iterator<T1>::difference_type 
-	operator- (reverse_iterator<T1> const & lhs, reverse_iterator<T2> const & rhs)
+	operator- (const reverse_iterator<T1> & lhs, const reverse_iterator<T2> & rhs)
 	{
-			return lhs.base() - rhs.base();
+			return rhs.base() - lhs.base();
 	}
 }
 

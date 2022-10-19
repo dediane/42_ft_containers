@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 21:59:10 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/18 18:13:48 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/19 15:45:34 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,13 @@ namespace ft {
 	template <typename T1, typename T2>
 	bool operator>=(const random_access_iterator<T1> &lhs, const random_access_iterator<T2> &rhs)
 	{return !(lhs.get_ptr() < rhs.get_ptr());}
+
+	template <typename T1, typename T2>
+	typename random_access_iterator<T1>::difference_type
+	operator-(random_access_iterator<T1> const &lhs, random_access_iterator<T2> const &rhs)
+	{
+		return lhs.get_ptr() - rhs.get_ptr();
+	}
 
 }
 

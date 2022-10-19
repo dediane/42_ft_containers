@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 14:44:52 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/18 18:32:52 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/19 15:17:02 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,3 +48,4 @@ int		main(void)
 	printSize(vct, true);
 	return (0);
 }
+
