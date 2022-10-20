@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 23:59:20 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/19 18:56:48 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/20 13:46:16 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,5 +278,42 @@ namespace ft {
 			
 		}
 	};
+
+	/*************************************/
+	/*       Non-member functions        */
+	/*************************************/
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator==( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs )
+	{
+		return;
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator!=( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs )
+	{
+		return;
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator<( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs )
+	{
+		return;
+	}
+
+	template< class Key, class T, class Compare, class Alloc > 
+	bool operator<=( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs )
+	{
+		return;
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator>( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs )
+	{
+		return;
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator>=( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs );
  }
 #endif

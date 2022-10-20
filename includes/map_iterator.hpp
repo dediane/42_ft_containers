@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 23:10:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/09/14 17:49:00 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/20 13:58:04 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,13 @@ namespace ft{
 	{
 		public:
 			typedef T								value_type;
-			typedef value_type*						pointer;
-			typedef const value_type*				const_pointer;
-			typedef value_type&						reference;
-			typedef const value_type& 				const_reference;
-			typedef std::ptrdiff_t					difference_type;
 			typedef std::bidirectional_iterator_tag	iterator_category;
+			typedef std::ptrdiff_t					difference_type;
+			typedef value_type*						pointer;
+			typedef value_type&						reference;
+			typedef const value_type*				const_pointer;
+			typedef const value_type& 				const_reference;
+			typedef node_pointer					node_pointer;
 
 		protected:
 			node_pointer _node;
@@ -37,8 +38,15 @@ namespace ft{
 			map_iterator() : _node(NULL) {}
 			map_iterator(node_pointer ptr) : _node(ptr) {}
 			map_iterator(map_iterator const & src) : _node(src._node) {}
-			map_iterator & operator=(map_iterator const & rhs) {_node = rhs._node; return *this;}
+			map_iterator & operator=(map_iterator const & rhs) 
+			{
+				if (this == &rhs)
+					return (*this);
+				_node = rhs._node; 
+				return *this;
+			}
 
+			operator map_iterator<const T, node_pointer>() const {return map_iterator<const T, node_pointer>(_node);}
 		//destructor
 			~map_iterator() {}
 			
@@ -53,7 +61,6 @@ namespace ft{
 
 			node_pointer get_node() {return _node;}
 			node_pointer get_node() const {return _node;}
-			operator map_iterator<const T, node_pointer>() const {return map_iterator<const T, node_pointer>(_node);}
 
 			template<typename it2>
 			bool operator==(const map_iterator<it2, node_pointer>& b) const {return _node == b.get_node();}
@@ -63,10 +70,10 @@ namespace ft{
 		private:
 			void increase() 
 			{
-				if (_node->right)
+				if (_node && _node->right)
 				{
 					_node = _node->right;
-					while (_node->left)
+					while (_node->left && _node->left != NULL)
 						_node = _node->left;
 				}
 				else
@@ -82,10 +89,10 @@ namespace ft{
 
 			void decrease() 
 			{
-				if (_node->left)
+				if (_node && _node->left)
 				{
 					_node = _node->left;
-					while (_node->right)
+					while (_node->right && _node->right != NULL)
 						_node = _node->right;
 				}
 				else
