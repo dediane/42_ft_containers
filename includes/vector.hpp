@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/18 18:10:21 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/21 17:31:29 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 #include "utils/enable_if.hpp"
 #include "utils/is_integral.hpp"
 #include "utils/lexicographical_compare.hpp"
+#include "utils/equal.hpp"
 
 namespace ft
 {
@@ -451,7 +452,7 @@ namespace ft
 	{
 			if (lhs.size() != rhs.size())
 					return false;
-				return std::equal(lhs.begin(), lhs.end(), rhs.begin());
+				return equal(lhs.begin(), lhs.end(), rhs.begin());
 	}
 
 	template <class T, class Alloc>

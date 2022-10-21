@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 23:10:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/20 13:58:04 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/21 18:59:15 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 namespace ft{
 
 	template<typename T, typename node_pointer>
-	class map_iterator 
+	class map_iterator
 	{
 		public:
 			typedef T								value_type;
@@ -28,7 +28,6 @@ namespace ft{
 			typedef value_type&						reference;
 			typedef const value_type*				const_pointer;
 			typedef const value_type& 				const_reference;
-			typedef node_pointer					node_pointer;
 
 		protected:
 			node_pointer _node;
@@ -56,7 +55,7 @@ namespace ft{
 			map_iterator& operator-- (void) {decrease(); return *this;}
 			map_iterator operator-- (int) {map_iterator it = *this; --(*this); return it;}
 
-			reference operator*() const {return _node->value;}
+			reference operator*() const {return _node->data;}
 			pointer operator->() const {return &(operator*());}
 
 			node_pointer get_node() {return _node;}

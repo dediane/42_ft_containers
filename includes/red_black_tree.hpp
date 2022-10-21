@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:58:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/20 18:11:37 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/21 19:16:41 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ namespace ft
 			  Node				*parent;
 
 			  //constructor for each node
-			  Node(value type const &data = value_type()) : data(data), left(NULL), right(NULL), parent(NULL){}
+			  Node(value_type const &data = value_type()) : data(data), left(NULL), right(NULL), parent(NULL){}
 			};
   
 			typedef size_t				size_type;
@@ -46,8 +46,8 @@ namespace ft
 			typedef value_type*			pointer;
 			typedef Node*				node_pointer;
 			typedef const Node*			const_node_pointer;
-			typedef &value_type			reference;
-			typedef const &value_type	const_reference;
+			typedef value_type&			reference;
+			typedef const value_type&	const_reference;
 			typedef typename allocator_type::template rebind<Node>::other node_allocator;
 
 			node_pointer	_root;
@@ -62,20 +62,20 @@ namespace ft
 			typedef typename ft::map_iterator<const value_type, node_pointer>		const_iterator;
 		  
 		  
-			red_black_tree(const compare_type& comp = compare_type(), const node_allocator& node_alloc = node_allocator())
+			RedBlackTree(const compare_type& comp = compare_type(), const node_allocator& node_alloc = node_allocator())
 			{
 				_node_alloc = node_alloc;
 				_end = create_node();
-				_root = _end();
+				_root = _end;
 				_size = 0;
 				_comp = comp;
 			}
 		
-			~red_black_tree()
+			~RedBlackTree()
 			{
 				if (_size)
-					clear();
-				_destroy_node(_root);
+					clearAll();
+				destroy_node(_root);
 			}
 
 			node_pointer	create_node(const_reference value = value_type())
@@ -107,22 +107,22 @@ namespace ft
 
 			iterator	begin()
 			{
-				return iterator(_min_node());
+				return iterator(minimum());
 			}
 
 			const_iterator	begin() const
 			{
-				return const_iterator(_min_node());
+				return const_iterator(minimum());
 			}
 
 			iterator	end()
 			{
-				return iterator(_end());
+				return iterator(_end);
 			}
 
 			const_iterator	end() const
 			{
-				return const_iterator(_end());
+				return const_iterator(_end);
 			}
 
 			compare_type	comp() const
@@ -142,7 +142,7 @@ namespace ft
 				return iterator(pos);
 			}
 
-			const_iterator	find(const_reference value)
+			const_iterator	find(const_reference value) const
 			{
 				node_pointer pos = tree_search_helper(value);
 				if (!pos)
@@ -153,7 +153,7 @@ namespace ft
 			size_type	count(const_reference value) const
 			{
 				node_pointer pos = tree_search_helper(value);
-				if(!ret)
+				if(!pos)
 					return 0;
 				return 1;
 			}
@@ -165,7 +165,7 @@ namespace ft
 				
 				for (; it != ite; it++)
 				{
-					if (!(_comp(it->first, value->first)))
+					if (!(_comp(it->first, value.first)))
 						return it;
 				}
 				return it;
@@ -178,7 +178,7 @@ namespace ft
 				
 				for (; it != ite; it++)
 				{
-					if (!(_comp(it->first, value->first)))
+					if (!(_comp(it->first, value.first)))
 						return it;
 				}
 				return it;
@@ -191,7 +191,7 @@ namespace ft
 				
 				for (; it != ite; it++)
 				{
-					if (!(_comp(value->first, it->first)))
+					if (!(_comp(value.first, it->first)))
 						return it;
 				}
 				return it;
@@ -204,7 +204,7 @@ namespace ft
 				
 				for (; it != ite; it++)
 				{
-					if (!(_comp(value->first, it->first)))
+					if (!(_comp(value.first, it->first)))
 						return it;
 				}
 				return it;
@@ -214,22 +214,22 @@ namespace ft
 			/*                  Modifiers                    */
 			/*************************************************/
 			
-			ft::pair<Iterator, bool>	insert(const_reference value)
+			ft::pair<iterator, bool>	insert(const_reference value)
 			{
 				node_pointer node = create_node(value);
 				node_pointer tmp = _root;
 				node_pointer parent = NULL;
 
 				if (empty())
-					return (insert_node(node));
+					return (insert_empty_node(node));
 				while (tmp != NULL && tmp != _end)
 				{
 					parent = tmp;
-					if (comp(value.first, tmp->data.first))
+					if (_comp(value.first, tmp->data.first))
 					{
 						tmp = tmp->left;
 					}
-					else if (comp(tmp->data.first, val.first))
+					else if (_comp(tmp->data.first, value.first))
 					{
 						tmp = tmp->right;
 					}
@@ -237,16 +237,12 @@ namespace ft
 					{
 						destroy_node(node);
 						update_end();
-						return (ft::make_pair(iteraator(tmp), false));
+						return (ft::make_pair(iterator(tmp), false));
 					}
 				}
 
 				node->parent = parent;
-				if (parent != NULL && parent!= _end)
-				{
-					root = node;
-				}
-				else if (comp(val.first, parent->data.first))
+				if (_comp(value.first, parent->data.first))
 				{
 					parent->left = node;
 				}
@@ -254,25 +250,207 @@ namespace ft
 				{
 					parent->right = node;
 				}
-
-				if(node->parent == NULL)
-				{
-					node->color = 0;
-					return;
-				}
-
-				if (node->parent->parent == NULL)
-				{
-					return;
-				}
 				node_insert_fix(node);
 				update_end();
 				_size++;
 				return (ft::make_pair(iterator(node), true));
 			}
 
+			void clear(node_pointer node)
+			{
+				if (!node || node == _end)
+					return;
+				clear(node->left);
+				clear(node->right);
+				destroy_node(node);
+			}
 			
-			
+			void clearAll()
+			{
+				clear(_root);
+				_root = _end;
+				_size = 0;
+			}
+
+			void range_erase(iterator first, iterator last)
+			{
+				size_type i = 0;
+
+				node_pointer tmp = first.base();
+				if (first == begin() && last == end())
+				{
+					clearAll();
+					return;
+				}
+				for (iterator it = first; it != last; it++)
+					i++;
+				while (i)
+				{
+					tmp = deleteNode(tmp);
+					i--;
+				}
+			}
+
+			size_type erase_node(value_type value)
+			{
+				node_pointer node;
+				
+				if (empty())
+					return 0;
+				node = tree_search_helper(value);
+				if (!node)
+					return 0;
+				if (_size == 1)
+				{
+					clearAll();
+					return 1;
+				}
+				deleteNode(node);
+				return 1;
+			}
+
+			void deleteNode(node_pointer node)
+			{
+				node_pointer nextNode = replace(node);
+				node_pointer parent = node->parent;
+				node_pointer sibling = GetSibling(node);
+				
+				if (nextNode == NULL)
+				{
+					if (node == _root)
+						_root = NULL;
+				
+					else
+					{
+						if (nextNode == NULL || nextNode->color == 0)
+							fixDoubleBlack(node);
+						else
+						{
+							if (sibling != NULL)
+								sibling->color = 1;
+						}
+						if (isonLeft(node))
+							parent->left = NULL;
+						else
+							parent->right = NULL;
+					}
+					delete node;
+					return;
+				}
+				if (node->left == NULL || node->right == NULL)
+				{
+					if (node == _root)
+					{
+						node->data = nextNode->data;
+						node->left = node->right = NULL;
+						delete nextNode;
+					}
+					else
+					{
+						if (isonLeft(node))
+						{
+							parent->left = nextNode;
+						}
+						else
+						{
+							parent->right = nextNode;
+						}
+						delete node;
+						nextNode->parent = parent;
+						if (nextNode == NULL || nextNode->color == 0)
+							fixDoubleBlack(nextNode);
+						else
+							nextNode->color = 0;
+					}
+					return;
+				}
+				swap_value(nextNode, node);
+				deleteNode(nextNode);
+			}
+
+			void fixDoubleBlack(node_pointer node)
+			{
+				node_pointer sibling = GetSibling(node);
+				node_pointer parent = node->parent;
+				
+				if (node == _root)
+					return;
+				if (sibling == NULL)
+					fixDoubleBlack(parent);
+				else
+				{
+					if (sibling->color == 1)
+					{
+						parent->color = 1;
+						sibling->color = 0;
+						if (isonLeft(sibling))
+							rotateRight(parent);
+						else
+							rotateLeft(parent);
+						fixDoubleBlack(node);
+					}
+					else
+					{
+						//if at least one child is red
+						if ((sibling->left && sibling->left->color == 1) || (sibling->right && sibling->right->color == 1))
+						{
+							if (sibling->left && sibling->left->color == 1)
+							{
+								if (isonLeft(sibling))
+								{
+									sibling->left->color = sibling->color;
+									sibling->color = parent->color;
+									rotateRight(parent);
+								}
+								else
+								{
+									sibling->left->color = parent->color;
+									rotateRight(sibling);
+									rotateLeft(parent);
+								}
+							}
+							else
+							
+								if (isonLeft(sibling))
+								{
+									sibling->right->color = parent->color;
+									rotateLeft(sibling);
+									rotateRight(parent);
+								}
+								else
+								{
+									sibling->right->color = sibling->color;
+									sibling->color= parent->color;
+									rotateLeft(parent);
+								}
+						}
+						else
+						{
+							sibling->color = 1;
+							if (parent->color == 0)
+								fixDoubleBlack(parent);
+							else
+								parent->color = 0;
+						}
+					}
+				}
+			}
+
+
+			bool isonLeft(node_pointer node)
+			{
+				return node == node->parent->left;
+			}
+
+			node_pointer GetSibling(node_pointer node)
+			{
+				if (node->parent == NULL)
+					return NULL;
+				if (isonLeft(node))
+					return node->parent->right;
+				else
+					return node->parent->left;
+			}
 
 
 
@@ -280,9 +458,18 @@ namespace ft
 			/*                    Helpers                    */
 			/*************************************************/
 
+			void swap_node(node_pointer *a, node_pointer *b)
+			{
+				node_pointer tmp = a;
+				a = b;
+				b = tmp;
+			}
+			
+
+			
 
 			//function to find in the tree
-			node_pointer	tree_search_helper(const_reference _to_find) const
+			node_pointer	tree_search_helper(const_reference to_find) const
 			{
 				node_pointer tmp = _root;
 
@@ -299,7 +486,7 @@ namespace ft
 			}
 
 			//insert empty node
-			ft::pair<iterator, bool>	insert_node(node_pointer node)
+			ft::pair<iterator, bool>	insert_empty_node(node_pointer node)
 			{
 				_root = node;
 				_root->left = NULL;
@@ -366,62 +553,59 @@ namespace ft
 					// 	break;
 					// }
 				}
-				root->color = 0;
+				_root->color = 0;
 			}
 
-
-
-
-		node_pointer minimum(node_pointer node) 
-		{
-			node_pointer tmp = node;
-			while (node->left != NULL && node->left != _end) 
+			node_pointer minimum() const
 			{
-				tmp = node->left;
+				node_pointer min = _root;
+				while (min->left != NULL && min) 
+				{
+					min = min->left;
+				}
+				return min;
 			}
-			return tmp;
-		}
 
-		node_pointer maximum(node_pointer node) 
-		{
-			node_pointer tmp = node;
-			while (node->right != NULL && node->right != _end) 
+			node_pointer maximum() const
 			{
-				tmp = node->right;
+				node_pointer max = _root;
+				while (max->right != NULL && max) 
+				{
+					max = max->right;
+				}
+				return max;
 			}
-			return tmp;
-		}
 
 
-		void destroy_node(node_pointer node)
-		{
-			_node_alloc.destroy(node);
-			_node_alloc.deallocate(node, 1);
-		}
+			void destroy_node(node_pointer node)
+			{
+				_node_alloc.destroy(node);
+				_node_alloc.deallocate(node, 1);
+			}
 
 
-		void update_end()
-		{
-			node_pointer max = maximum();
-			max->right = _end;
-			_end->parent = max;
-			_end->right = NULL;
-			_end->color = 0;
-		}
+			void update_end()
+			{
+				node_pointer max = maximum();
+				max->right = _end;
+				_end->parent = max;
+				_end->right = NULL;
+				_end->color = 0;
+			}
 
 
 			void rotateLeft(node_pointer node) 
 			{
 				node_pointer parent = node->right;
 				node->right = parent->left;
-				if (parent->left != end()) 
+				if (parent->left != NULL) 
 				{
 					parent->left->parent = node;
 				}
 				parent->parent = node->parent;
 				if (node->parent == 0) 
 				{
-					this->root = parent;
+					this->_root = parent;
 				} 
 				else if (node == node->parent->left) 
 				{
@@ -439,14 +623,14 @@ namespace ft
 			{
 				node_pointer parent = node->left;
 				node->left = parent->right;
-				if (parent->right != end()) 
+				if (parent->right != NULL) 
 				{
 					parent->right->parent = node;
 				}
 				parent->parent = node->parent;
 				if (node->parent == 0) 
 				{
-					this->root = parent;
+					this->_root = parent;
 				} 
 				else if (node == node->parent->right) 
 				{
@@ -493,532 +677,35 @@ namespace ft
 				return child;
 			}
 
-			
-
-			
-		  
-
-
-		  // Preorder
-		  void preOrderHelper(NodePtr node) {
-			if (node != TNULL) {
-			  std::cout << node->data << " ";
-			  preOrderHelper(node->left);
-			  preOrderHelper(node->right);
-			}
-		  }
-
-		  // Inorder
-		  void inOrderHelper(NodePtr node) {
-			if (node != TNULL) {
-			  inOrderHelper(node->left);
-			  std::cout << node->data << " ";
-			  inOrderHelper(node->right);
-			}
-		  }
-
-		  // Post order
-		  void postOrderHelper(NodePtr node) {
-			if (node != TNULL) {
-			  postOrderHelper(node->left);
-			  postOrderHelper(node->right);
-			  std::cout << node->data << " ";
-			}
-		  }
-
-		  NodePtr searchTreeHelper(NodePtr node, int key) {
-			if (node == TNULL || key == node->data) {
-			  return node;
+			node_pointer	replace(node_pointer node)
+			{
+				if (node->left != NULL && node->right != NULL && node->right != _end)
+					return successor(node->right);
+				if (node->left == NULL && node->right == NULL)
+					return NULL;
+				if (node->left != NULL)
+					return node->left;
+				else
+					return node->right;
 			}
 
-			if (key < node->data) {
-			  return searchTreeHelper(node->left, key);
+			void swap_value(node_pointer a,node_pointer b)
+			{
+				key_type tmp;
+				key_type *keya = const_cast<key_type *>(&a->data.first);
+				key_type *keyb = const_cast<key_type *>(&b->data.first);
+
+				tmp = *keya;
+				*keya = *keyb;
+				*keyb = tmp;
+
+				tmp->data.second= a->data.second;
+				a->data.second = b->data.second;
+				b->data.second = tmp->data.second;
+
 			}
-			return searchTreeHelper(node->right, key);
-		  }
-
-		  // For balancing the tree after deletion
-		  void deleteFix(NodePtr x) {
-			NodePtr s;
-			while (x != root && x->color == 0) {
-			  if (x == x->parent->left) {
-				s = x->parent->right;
-				if (s->color == 1) {
-				  s->color = 0;
-				  x->parent->color = 1;
-				  leftRotate(x->parent);
-				  s = x->parent->right;
-				}
-
-				if (s->left->color == 0 && s->right->color == 0) {
-				  s->color = 1;
-				  x = x->parent;
-				} else {
-				  if (s->right->color == 0) {
-					s->left->color = 0;
-					s->color = 1;
-					rightRotate(s);
-					s = x->parent->right;
-				  }
-
-				  s->color = x->parent->color;
-				  x->parent->color = 0;
-				  s->right->color = 0;
-				  leftRotate(x->parent);
-				  x = root;
-				}
-			  } else {
-				s = x->parent->left;
-				if (s->color == 1) { void clear() 
-	  {
-		if (_size == 0)
-		  return ;
-		NodePtr n = begin()._node;
-		while (n != TNULL) {
-			if (n->left != TNULL) n = n->left;
-			else if (n->right != TNULL) n = n->right;
-			else { 
-				//delete n, its a childless node void clear() 
-	  {
-		if (_size == 0)
-		  return ;
-		NodePtr n = begin()._node;
-		while (n != TNULL) {
-			if (n->left != TNULL) n = n->left;
-			else if (n->right != TNULL) n = n->right;
-			else { 
-				//delete n, its a childless node
-				alloc.destroy(n->data);
-				alloc.deallocate(n->data, 1);
-				NodePtr aux = n->parent;
-				nalloc.deallocate(n, 1); void clear() 
-	  {
-		if (_size == 0)
-		  return ;
-		NodePtr n = begin()._node;
-		while (n != TNULL) {
-			if (n->left != TNULL) n = n->left;
-			else if (n->right != TNULL) n = n->right;
-			else { 
-				//delete n, its a childless node
-				alloc.destroy(n->data);
-				alloc.deallocate(n->data, 1);
-				NodePtr aux = n->parent;
-				nalloc.deallocate(n, 1); void clear() 
-	  {
-		if (_size == 0)
-		  return ;
-		NodePtr n = begin()._node;
-		while (n != TNULL) {
-			if (n->left != TNULL) n = n->left;
-			else if (n->right != TNULL) n = n->right;
-			else { 
-				//delete n, its a childless node
-				alloc.destroy(n->data);
-				alloc.deallocate(n->data, 1);
-				NodePtr aux = n->parent;
-				nalloc.deallocate(n, 1); void clear() 
-	  {
-		if (_size == 0)
-		  return ; void clear() 
-	  {
-		if (_size == 0)
-		  return ;
-		NodePtr n = begin()._node;
-		while (n != TNULL) {
-			if (n->left != TNULL) n = n->left;
-			else if (n->right != TNULL) n = n->right;
-			else { 
-				//delete n, its a childless node
-				alloc.destroy(n->data);
-				alloc.deallocate(n->data, 1); void clear() 
-	  {
-		if (_size == 0)
-		  return ;
-		NodePtr n = begin()._node;
-		while (n != TNULL) {
-			if (n->left != TNULL) n = n->left;
-			else if (n->right != TNULL) n = n->right;
-			else { 
-				//delete n, its a childless node
-				alloc.destroy(n->data);
-				alloc.deallocate(n->data, 1);
-				NodePtr aux = n->parent;
-				nalloc.deallocate(n, 1);
-				if (!aux) break ;
-				if (aux->left == n) aux->left = TNULL;
-				else aux->right = TNULL;
-				n = aux;
-			}
-		}
-		_size = 0;
-	}
-				NodePtr aux = n->parent;
-				nalloc.deallocate(n, 1);
-				if (!aux) break ;
-				if (aux->left == n) aux->left = TNULL;
-				else aux->right = TNULL;
-				n = aux;
-			}
-		}
-		_size = 0;
-	}
-		NodePtr n = begin()._node;
-		while (n != TNULL) {
-			if (n->left != TNULL) n = n->left;
-			else if (n->right != TNULL) n = n->right;
-			else {  void clear() 
-	  {
-		if (_size == 0)
-		  return ;
-		NodePtr n = begin()._node;
-		while (n != TNULL) {
-			if (n->left != TNULL) n = n->left;
-			else if (n->right != TNULL) n = n->right;
-			else { 
-				//delete n, its a childless node
-				alloc.destroy(n->data);
-				alloc.deallocate(n->data, 1);
-				NodePtr aux = n->parent;
-				nalloc.deallocate(n, 1);
-				if (!aux) break ;
-				if (aux->left == n) aux->left = TNULL;
-				else aux->right = TNULL;
-				n = aux;
-			}
-		}
-		_size = 0;
-	}
-				//delete n, its a childless node
-				alloc.destroy(n->data);
-				alloc.deallocate(n->data, 1);
-				NodePtr aux = n->parent;
-				nalloc.deallocate(n, 1);
-				if (!aux) break ;
-				if (aux->left == n) aux->left = TNULL;
-				else aux->right = TNULL;
-				n = aux;
-			}
-		}
-		_size = 0;
-	}
-				if (!aux) break ;
-				if (aux->left == n) aux->left = TNULL;
-				else aux->right = TNULL;
-				n = aux;
-			}
-		}
-		_size = 0;
-	}
-				if (!aux) break ;
-				if (aux->left == n) aux->left = TNULL;
-				else aux->right = TNULL;
-				n = aux;
-			}
-		}
-		_size = 0;
-	}
-				if (!aux) break ;
-				if (aux->left == n) aux->left = TNULL;
-				else aux->right = TNULL;
-				n = aux;
-			}
-		}
-		_size = 0;
-	}
-				alloc.destroy(n->data);
-				alloc.deallocate(n->data, 1); void clear() 
-	  {
-		if (_size == 0)
-		  return ;
-		NodePtr n = begin()._node;
-		while (n != TNULL) {
-			if (n->left != TNULL) n = n->left;
-			else if (n->right != TNULL) n = n->right;
-			else { 
-				//delete n, its a childless node
-				alloc.destroy(n->data);
-				alloc.deallocate(n->data, 1); void clear() 
-	  {
-		if (_size == 0)
-		  return ;
-		NodePtr n = begin()._node;
-		while (n != TNULL) {
-			if (n->left != TNULL) n = n->left;
-			else if (n->right != TNULL) n = n->right;
-			else { 
-				//delete n, its a childless node
-				alloc.destroy(n->data);
-				alloc.deallocate(n->data, 1);
-				NodePtr aux = n->parent;
-				nalloc.deallocate(n, 1);
-				if (!aux) break ;
-				if (aux->left == n) aux->left = TNULL;
-				else aux->right = TNULL;
-				n = aux;
-			}
-		}
-		_size = 0;
-	}
-				NodePtr aux = n->parent;
-				nalloc.deallocate(n, 1);
-				if (!aux) break ;
-				if (aux->left == n) aux->left = TNULL;
-				else aux->right = TNULL;
-				n = aux;
-			}
-		}
-		_size = 0;
-	}
-				NodePtr aux = n->parent;
-				nalloc.deallocate(n, 1);
-				if (!aux) break ;
-				if (aux->left == n) aux->left = TNULL;
-				else aux->right = TNULL;
-				n = aux;
-			}
-		}
-		_size = 0;
-	}
-				  s->color = 0;
-				  x->parent->color = 1;
-				  rightRotate(x->parent);
-				  s = x->parent->left;
-				} void clear() 
-	  {
-		if (_size == 0)
-		  return ;
-		NodePtr n = begin()._node;
-		while (n != TNULL) {
-			if (n->left != TNULL) n = n->left;
-			else if (n->right != TNULL) n = n->right;
-			else { 
-				//delete n, its a childless node
-				alloc.destroy(n->data);
-				alloc.deallocate(n->data, 1);
-				NodePtr aux = n->parent;
-				nalloc.deallocate(n, 1);
-				if (!aux) break ;
-				if (aux->left == n) aux->left = TNULL;
-				else aux->right = TNULL;
-				n = aux;
-			}
-		}
-		_size = 0;
-	}
-
-				if (s->right->color == 0 && s->right->color == 0) {
-				  s->color = 1;
-				  x = x->parent;
-				} else {
-				  if (s->left->color == 0) {
-					s->right->color = 0;
-					s->color = 1;
-					leftRotate(s);
-					s = x->parent->left;
-				  }
-
-				  s->color = x->parent->color;
-				  x->parent->color = 0;
-				  s->left->color = 0;
-				  rightRotate(x->parent);
-				  x = root;
-				}
-			  }
-			}
-			x->color = 0;
-		  }
-
-		  void rbTransplant(NodePtr u, NodePtr v) {
-			if (u->parent == 0) {
-			  root = v;
-			} else if (u == u->parent->left) {
-			  u->parent->left = v;
-			} else {
-			  u->parent->right = v;
-			}
-			v->parent = u->parent;
-		  }
-
-		  void deleteNodeHelper(NodePtr node, int key) {
-			NodePtr z = TNULL;
-			NodePtr x, y;
-			while (node != TNULL) {
-			  if (node->data == key) {
-				z = node;
-			  }
-
-			  if (node->data <= key) {
-				node = node->right;
-			  } else {
-				node = node->left;
-			  }
-			}
-
-			if (z == TNULL) {
-			  std::cout << "Key not found in the tree" << std::endl;
-			  return;
-			}
-
-			y = z;
-			int y_original_color = y->color;
-			if (z->left == TNULL) {
-			  x = z->right;
-			  rbTransplant(z, z->right);
-			} else if (z->right == TNULL) {
-			  x = z->left;
-			  rbTransplant(z, z->left);
-			} else { void clear() 
-	  {
-		if (_size == 0)
-		  return ;
-		NodePtr n = begin()._node;
-		while (n != TNULL) {
-			if (n->left != TNULL) n = n->left;
-			else if (n->right != TNULL) n = n->right;
-			else { 
-				//delete n, its a childless node
-				alloc.destroy(n->data);
-				alloc.deallocate(n->data, 1);
-				NodePtr aux = n->parent;
-				nalloc.deallocate(n, 1);
-				if (!aux) break ;
-				if (aux->left == n) aux->left = TNULL;
-				else aux->right = TNULL;
-				n = aux;
-			}
-		}
-		_size = 0;
-	}
-			  y = minimum(z->right);
-			  y_original_color = y->color;
-			  x = y->right;
-			  if (y->parent == z) {
-				x->parent = y;
-			  } else {
-				rbTransplant(y, y->right);
-				y->right = z->right;
-				y->right->parent = y;
-			  }
-
-			  rbTransplant(z, y);
-			  y->left = z->left;
-			  y->left->parent = y;
-			  y->color = z->color;
-			}
-			delete z;
-			if (y_original_color == 0) {
-			  deleteFix(x);
-			}
-		  }
-
-		  // For balancing the tree after insertion
-		  
-
-		  void printHelper(NodePtr root, std::string indent, bool last) {
-			if (root != TNULL) {
-			  std::cout << indent;
-			  if (last) {
-				std::cout << "R----";
-				indent += "   ";
-			  } else {
-				std::cout << "L----";
-				indent += "|  ";
-			  }
-
-			  std::string sColor = root->color ? "RED" : "BLACK";
-			  std::cout << root->data << "(" << sColor << ")" << std::endl;
-			  printHelper(root->left, indent, false);
-			  printHelper(root->right, indent, true);
-			}
-		  }
-
-   public:
-		RedBlackTree() {
-		  TNULL = new Node;
-		  TNULL->color = 0;
-		  TNULL->left = 0;
-		  TNULL->right = 0;
-		  root = TNULL;
-		}
-
-		void preorder() {
-		  preOrderHelper(this->root);
-		}
-
-		void inorder() {
-		  inOrderHelper(this->root);
-		}
-
-		void postorder() {
-		  postOrderHelper(this->root);
-		}
-
-		NodePtr searchTree(int k) {
-		  return searchTreeHelper(this->root, k);
-		}
-
-
-
-
-		// Inserting a node
-		void insert(int key) {
-		  NodePtr node = new Node;
-		  node->parent = 0;
-		  node->data = key;
-		  node->left = TNULL;
-		  node->right = TNULL;
-		  node->color = 1;
-
-		  NodePtr y = 0;
-		  NodePtr x = this->root;
-
-		  while (x != TNULL) {
-			y = x;
-			if (node->data < x->data) {
-			  x = x->left;
-			} else {
-			  x = x->right;
-			}
-		  }
-
-		  node->parent = y;
-		  if (y == 0) {
-			root = node;
-		  } else if (node->data < y->data) {
-			y->left = node;
-		  } else {
-			y->right = node;
-		  }
-
-		  if (node->parent == 0) {
-			node->color = 0;
-			return;
-		  }
-
-		  if (node->parent->parent == 0) {
-			return;
-		  }
-
-		  insertFix(node);
-		}
-
-		NodePtr getRoot() {
-		  return this->root;
-		}
-
-		void deleteNode(int data) {
-		  deleteNodeHelper(this->root, data);
-		}
-
-	  void printTree() {
-		if (root) {
-		  printHelper(this->root, "", true);
-		}
-	  }
-
-
 	};
 };
+
 
 #endif
