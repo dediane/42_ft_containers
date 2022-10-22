@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 23:59:20 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/21 19:17:44 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/22 18:26:15 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,11 @@ namespace ft {
 		size_type max_size() const
 		{
 			return _tree.max_size();
+		}
+
+		mapped_type& operator[](const key_type& key)
+		{
+			return (insert(ft::make_pair(key, mapped_type())).first)->second;
 		}
 
 		/*************************************/

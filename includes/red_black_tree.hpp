@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:58:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/21 19:16:41 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/22 18:48:23 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -276,7 +276,7 @@ namespace ft
 			{
 				size_type i = 0;
 
-				node_pointer tmp = first.base();
+				node_pointer tmp = first.get_node();
 				if (first == begin() && last == end())
 				{
 					clearAll();
@@ -309,7 +309,7 @@ namespace ft
 				return 1;
 			}
 
-			void deleteNode(node_pointer node)
+			node_pointer deleteNode(node_pointer node)
 			{
 				node_pointer nextNode = replace(node);
 				node_pointer parent = node->parent;
@@ -335,7 +335,7 @@ namespace ft
 							parent->right = NULL;
 					}
 					delete node;
-					return;
+					return sibling;
 				}
 				if (node->left == NULL || node->right == NULL)
 				{
@@ -362,10 +362,11 @@ namespace ft
 						else
 							nextNode->color = 0;
 					}
-					return;
+					return sibling;
 				}
 				swap_value(nextNode, node);
 				deleteNode(nextNode);
+				return sibling;
 			}
 
 			void fixDoubleBlack(node_pointer node)
@@ -475,9 +476,9 @@ namespace ft
 
 				while (tmp != NULL && tmp != _end)
 				{
-					if (comp(tmp->data.first, to_find.first))
+					if (_comp(tmp->data.first, to_find.first))
 						tmp = tmp->right;
-					else if (comp(to_find.first, tmp->data.first))
+					else if (_comp(to_find.first, tmp->data.first))
 						tmp = tmp->left;
 					else
 						return tmp;
@@ -647,24 +648,27 @@ namespace ft
 
 			node_pointer successor(node_pointer node) 
 			{
-				if (node->right != NULL && node->right != _end) 
+				if (node->right && node->right != NULL) 
 				{
-					return minimum(node->right);
+					node = node->right;
+					while(node->right)
+						node = node->left;
+					return node;
 				}
-				node_pointer child = node->parent;
-				while (child != NULL && child != _end && node == child->right) 
+				node_pointer parent = node->parent;
+				while (parent != NULL && parent != _end && node == parent->right) 
 				{
-					node = child;
-					child = child->parent;
+					node = parent;
+					parent = parent->parent;
 				}
-				return child;
+				return parent;
 			}
 
 			node_pointer predecessor(node_pointer node) 
 			{
 				if (node->left != NULL && node->left != _end) 
 				{
-					return maximum(node->left);
+					return maximum();
 				}
 
 				node_pointer child = node->parent;
@@ -694,14 +698,15 @@ namespace ft
 				key_type tmp;
 				key_type *keya = const_cast<key_type *>(&a->data.first);
 				key_type *keyb = const_cast<key_type *>(&b->data.first);
+				value_type	temp;
 
 				tmp = *keya;
 				*keya = *keyb;
 				*keyb = tmp;
 
-				tmp->data.second= a->data.second;
+				temp.second= a->data.second;
 				a->data.second = b->data.second;
-				b->data.second = tmp->data.second;
+				b->data.second = temp.second;
 
 			}
 	};
