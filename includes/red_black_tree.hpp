@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:58:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/22 18:48:23 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/26 19:10:37 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,15 @@
 
 namespace ft
 {
+
+	template <typename T>
+	void swap(T &a, T &b)
+	{
+		T tmp = a;
+		a = b;
+		b = tmp;
+	}
+
 	template <typename T, typename K, class Compare, class Alloc>
 	class RedBlackTree 
 	{
@@ -83,7 +92,7 @@ namespace ft
 				node_pointer node = _node_alloc.allocate(1);
 
 				_node_alloc.construct(node, Node(value));
-				node->color = 1; //black
+				node->color = 1; 
 				node->left = NULL;
 				node->right = NULL;
 				node->parent = NULL;
@@ -465,6 +474,16 @@ namespace ft
 				a = b;
 				b = tmp;
 			}
+
+			void swap_tree(RedBlackTree &a)
+			{
+				ft::swap(_root, a._root);
+				ft::swap(_end, a._end);
+				ft::swap(_size, a._size);
+				ft::swap(_node_alloc, a._node_alloc);
+				ft::swap(_comp, a._comp);
+
+			}
 			
 
 			
@@ -490,7 +509,7 @@ namespace ft
 			ft::pair<iterator, bool>	insert_empty_node(node_pointer node)
 			{
 				_root = node;
-				_root->left = NULL;
+				_root->left = _end;
 				_root->right = _end;
 				_end->parent = _root;
 				_root->color = 0; //black
@@ -501,40 +520,15 @@ namespace ft
 			// For balancing the tree after insertion
 			void	node_insert_fix(node_pointer node)
 			{
-				node_pointer tmp;
-				
-				while (node->parent && node->parent->color == 1)
+				while((node != _root) && (node->color != 0) && node->parent && node->parent->color == 1)
 				{
-					if (node->parent->parent->right == node->parent)
+					if(node->parent == node->parent->parent->left)
 					{
-						tmp = node->parent->parent->left;
-						if (tmp->color == 1)
+						if (node->parent->parent->right != NULL && node->parent->parent->right->color == 1)
 						{
-							tmp->color = 0;
-							node->parent->color = 0;
 							node->parent->parent->color = 1;
-							node = node->parent->parent;
-						}
-						else
-						{
-							if (node == node->parent->left)
-							{
-								node = node->parent;
-								rotateRight(node);
-							}
 							node->parent->color = 0;
-							node->parent->parent->color = 1;
-							rotateLeft(node->parent->parent);
-						}
-					}
-					else
-					{
-						tmp = node->parent->parent->right;
-						if (tmp->color == 1)
-						{
-							tmp->color = 0;
-							node->parent->color = 0;
-							node->parent->parent->color = 1;
+							node->parent->parent->right->color = 0;
 							node = node->parent->parent;
 						}
 						else
@@ -544,17 +538,93 @@ namespace ft
 								node = node->parent;
 								rotateLeft(node);
 							}
-							node->parent->color = 0;
-							node->parent->parent->color = 1;
-							rotateRight(node->parent->parent);
+						int tmpColor = node->parent->color;
+						node->parent->color = node->parent->parent->color;
+						node->parent->parent->color = tmpColor;
+						//node = node->parent;
+						rotateRight(node->parent->parent);
 						}
 					}
-					// if ( node == root)
-					// {
-					// 	break;
-					// }
+					else
+					{
+						if ((node->parent->parent->left != NULL) && (node->parent->parent->left->color == 1))
+						{
+							node->parent->parent->color = 1;
+							node->parent->color = 0;
+							node->parent->parent->left->color = 0;
+							node = node->parent->parent;
+						}
+						else
+						{
+							if (node == node->parent->left)
+							{
+								node = node->parent;
+								rotateRight(node);
+							}
+							int tmpColor = node->parent->color;
+							node->parent->color = node->parent->parent->color;
+							node->parent->parent->color = tmpColor;
+							//node = node->parent;
+							rotateLeft(node->parent->parent);
+						}
+					}
 				}
 				_root->color = 0;
+				
+				// node_pointer tmp;
+				
+				// while (node && node->color != 0 && node->parent && node->parent->color == 1)
+				// {
+				// 	if (node->parent->parent->right && (node->parent->parent->right == node->parent))
+				// 	{
+				// 		tmp = node->parent->parent->left;
+				// 		if (tmp->color == 1)
+				// 		{
+				// 			tmp->color = 0;
+				// 			node->parent->color = 0;
+				// 			node->parent->parent->color = 1;
+				// 			node = node->parent->parent;
+				// 		}
+				// 		else
+				// 		{
+				// 			if (node == node->parent->left)
+				// 			{
+				// 				node = node->parent;
+				// 				rotateRight(node);
+				// 			}
+				// 			node->parent->color = 0;
+				// 			node->parent->parent->color = 1;
+				// 			rotateLeft(node->parent->parent);
+				// 		}
+				// 	}
+				// 	else
+				// 	{
+				// 		tmp = node->parent->parent->right;
+				// 		if (tmp->color == 1)
+				// 		{
+				// 			tmp->color = 0;
+				// 			node->parent->color = 0;
+				// 			node->parent->parent->color = 1;
+				// 			node = node->parent->parent;
+				// 		}
+				// 		else
+				// 		{
+				// 			if (node == node->parent->right)
+				// 			{
+				// 				node = node->parent;
+				// 				rotateLeft(node);
+				// 			}
+				// 			node->parent->color = 0;
+				// 			node->parent->parent->color = 1;
+				// 			rotateRight(node->parent->parent);
+				// 		}
+				// 	}
+				// 	// if ( node == root)
+				// 	// {
+				// 	// 	break;
+				// 	// }
+				// }
+				// _root->color = 0;
 			}
 
 			node_pointer minimum() const
@@ -590,6 +660,7 @@ namespace ft
 				node_pointer max = maximum();
 				max->right = _end;
 				_end->parent = max;
+				_end->left = NULL;
 				_end->right = NULL;
 				_end->color = 0;
 			}
@@ -598,51 +669,43 @@ namespace ft
 			void rotateLeft(node_pointer node) 
 			{
 				node_pointer parent = node->right;
-				node->right = parent->left;
-				if (parent->left != NULL) 
+
+				if (node == _root)
+					_root = parent;
+				if (node->parent != NULL)
 				{
-					parent->left->parent = node;
+					if (node == node->parent->left)
+						node->parent->left = parent;
+					else 
+						node->parent->right = parent;
 				}
 				parent->parent = node->parent;
-				if (node->parent == 0) 
-				{
-					this->_root = parent;
-				} 
-				else if (node == node->parent->left) 
-				{
-					node->parent->left = parent;
-				} 
-				else 
-				{
-					node->parent->right = parent;
-				}
-				parent->left = node;
 				node->parent = parent;
+				node->right = parent->left;
+				if (parent->left != NULL) 
+					parent->left->parent = node;
+				parent->left = node;
 			}
 
 			void rotateRight(node_pointer node) 
 			{
 				node_pointer parent = node->left;
-				node->left = parent->right;
-				if (parent->right != NULL) 
+
+				if (node == _root)
+					_root = parent;
+				if (node->parent != NULL)
 				{
-					parent->right->parent = node;
+					if (node == node->parent->right)
+						node->parent->right = parent;
+					else 
+						node->parent->left = parent;
 				}
 				parent->parent = node->parent;
-				if (node->parent == 0) 
-				{
-					this->_root = parent;
-				} 
-				else if (node == node->parent->right) 
-				{
-					node->parent->right = parent;
-				} 
-				else 
-				{
-					node->parent->left = parent;
-				}
-				parent->right = node;
 				node->parent = parent;
+				node->left = parent->right;
+				if (parent->right != NULL) 
+					parent->right->parent = node;
+				parent->right = node;
 			}
 
 

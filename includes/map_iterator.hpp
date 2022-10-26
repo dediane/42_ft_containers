@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 23:10:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/22 18:44:13 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/26 19:20:51 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,21 @@ namespace ft{
 					while (_node->left && _node->left != NULL)
 						_node = _node->left;
 				}
-				else
+				else if (_node && _node->parent)
 				{
 					node_pointer temp = _node;
-					_node = _node->parent;
-					while (_node->left != temp) {
-						temp = _node;
-						_node = _node->parent;
+					node_pointer tmp_parent = _node->parent;
+					while ( tmp_parent && _node == tmp_parent->right) 
+					{
+						if (_node->parent == NULL) 
+						{
+							_node = temp;
+							break;
+						}
+						_node = tmp_parent;
+						tmp_parent = tmp_parent->parent;
 					}
+					_node = tmp_parent;
 				}
 			}
 
@@ -94,14 +101,21 @@ namespace ft{
 					while (_node->right && _node->right != NULL)
 						_node = _node->right;
 				}
-				else
+				else if (_node && _node->parent)
 				{
 					node_pointer temp = _node;
-					_node = _node->parent;
-					while (_node->right != temp) {
-						temp = _node;
-						_node = _node->parent;
+					node_pointer tmp_parent = _node->parent;
+					while ( tmp_parent && _node == tmp_parent->left) 
+					{
+						if (_node->parent == NULL) 
+						{
+							_node = temp;
+							break;
+						}
+						_node = tmp_parent;
+						tmp_parent = tmp_parent->parent;
 					}
+					_node = tmp_parent;
 				}
 			}
 

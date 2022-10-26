@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 23:59:20 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/22 18:26:15 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/26 18:22:28 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ namespace ft {
 		{
 			static_cast<void>(comp);
 			static_cast<void>(alloc);
+										std::cout << "coucou avant" << std::endl;
 			insert(first, last);
 		}
 
@@ -214,8 +215,13 @@ namespace ft {
 		template< class InputIterator >
 		void insert(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 		{
+							std::cout << "coucou" << std::endl;
+
 			for (;first != last; first++)
-				insert(*first);
+			{
+				std::cout << &first << std::endl;
+				insert(*first);				
+			}
 		}
 
 		void erase( iterator pos )
@@ -233,10 +239,10 @@ namespace ft {
 			return (_tree.erase_node(ft::make_pair(key, mapped_type())));
 		}
 
-		// void swap( map& other )
-		// {
-			
-		// }
+		void swap( map& other )
+		{
+			_tree.swap_tree(other._tree);
+		}
 
 		/*************************************/
 		/*              Look Up              */
@@ -342,6 +348,12 @@ namespace ft {
 	bool operator>=( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs )
 	{
 		return (!(lhs < rhs));
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	void swap( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs )
+	{
+		return (lhs.swap(rhs));
 	}
  }
 #endif
