@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 23:59:20 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/26 18:22:28 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/10/26 19:28:23 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ namespace ft {
 		{
 			static_cast<void>(comp);
 			static_cast<void>(alloc);
-										std::cout << "coucou avant" << std::endl;
 			insert(first, last);
 		}
 
@@ -215,11 +214,8 @@ namespace ft {
 		template< class InputIterator >
 		void insert(typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 		{
-							std::cout << "coucou" << std::endl;
-
 			for (;first != last; first++)
 			{
-				std::cout << &first << std::endl;
 				insert(*first);				
 			}
 		}
