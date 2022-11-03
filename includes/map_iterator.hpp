@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 23:10:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/26 19:35:36 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/03 13:25:02 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ namespace ft{
 			
 
 			map_iterator& operator++ (void) {increase(); return *this;}
-			map_iterator operator++ (int) {map_iterator it = *this; ++(*this); return it;}
+			map_iterator operator++ (int) {map_iterator it = *this; ++*this; return it;}
 			map_iterator& operator-- (void) {decrease(); return *this;}
-			map_iterator operator-- (int) {map_iterator it = *this; --(*this); return it;}
+			map_iterator operator-- (int) {map_iterator it = *this; --*this; return it;}
 
 			reference operator*() const {return _node->data;}
-			pointer operator->() const {return &(operator*());}
+			pointer operator->() const {return &_node->data;}
 
 			node_pointer get_node() {return _node;}
 			node_pointer get_node() const {return _node;}
@@ -83,7 +83,7 @@ namespace ft{
 					{
 						if (_node->parent == NULL) 
 						{
-							_node = temp;
+							_node = temp->parent;
 							break;
 						}
 						_node = tmp_parent;
