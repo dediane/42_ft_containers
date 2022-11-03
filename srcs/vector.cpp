@@ -1,59 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   vector.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/03 13:30:40 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/03 18:41:52 by ddecourt         ###   ########.fr       */
+/*   Created: 2022/11/03 18:29:40 by ddecourt          #+#    #+#             */
+/*   Updated: 2022/11/03 18:38:07 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "vector.hpp"
-#include "stack.hpp"
-#include "map.hpp"
-
-#include <vector>
-#include <stack>
-#include <map>
-
 
 #include <iostream>
 #include <string>
 #include <list>
+#include <vector>
+#include "vector.hpp"
+
 # define _BLUE "\033[0;34m"
 # define _BLACK "\033[0m"
 # define _CYAN "\033[0;36m"
 # define _GREEN "\033[1m\033[32m"
 # define _RED "\033[1m\033[31m"
 # define _BBLUE "\033[1;34m"
-
-int printheader(std::string container)
-{
-    for (int i = 0; i < ( 90); i++)
-        std::cout << "\033[1;34m"  << "*";
-    std::cout << std::endl;
-    std::cout << std::endl;
-    for (int a = 0; a < 35; a++)
-        std::cout << " ";
-    std::cout  << "testeur: "  << container << std::endl;
-    std::cout << std::endl;
-    for (int c = 0; c < ( 90); c++)
-        std::cout << "*";
-    std::cout << _BLACK << std::endl;
-    return 0;
-}
-
-
-void    printresult(int i)
-{
-    std::cout << std::endl;
-    if (i == 1)
-        std::cout << _GREEN << "OK ✅" << _BLACK << std::endl;
-    else
-        std::cout << _RED << "KO ❌" << _BLACK << std::endl;
-}
 
 void print_vector_ft(ft::vector<int> vec)
 {
@@ -69,6 +37,15 @@ void print_vector_ft(ft::vector<int> vec)
             std::cout << *it << " | ";
         std::cout << std::endl;
     }
+}
+
+void    printresult(int i)
+{
+    std::cout << std::endl;
+    if (i == 1)
+        std::cout << _GREEN << "OK ✅" << _BLACK << std::endl;
+    else
+        std::cout << _RED << "KO ❌" << _BLACK << std::endl;
 }
 
 void print_vector_std(std::vector<int> vec)
@@ -407,19 +384,4 @@ void testerVectorModifier()
     print_vector_ft(vec);
     print_vector_std(vect);
     vec[vec.size() - 1] == vect[vect.size() - 1] ? printresult(1) : printresult(0);
-}
-
-int main(void)
-{
-    printheader("VECTOR");
-    testerVectorConstructors();
-    testerVectorOperator();
-    testerVectorIterator();
-    testerVectorCapacity();
-    testerVectorElementAccess();
-    testerVectorModifier();
-
-    printheader("MAP");
-    printheader("STACK");
-    
 }

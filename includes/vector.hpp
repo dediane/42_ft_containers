@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/03 16:52:29 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/03 18:27:45 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -331,6 +331,7 @@ namespace ft
 			{
 				--_size;
 				_alloc.destroy(&_vector[_size]);
+				_capacity = size();
 			};
 			
 			iterator insert(iterator position, const value_type& val)
