@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/03 15:37:02 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/03 16:52:29 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,8 +174,8 @@ namespace ft
 			iterator				begin() {return iterator(_vector);};
 			const_iterator			begin() const {return const_iterator(_vector);};
 			
-			iterator				end() {return iterator(_vector + _size);};
-			const_iterator			end() const {return const_iterator(_vector + _size);};
+			iterator				end() {return iterator(_vector + size());};
+			const_iterator			end() const {return const_iterator(_vector + size());};
 			
 			reverse_iterator		rbegin() {return reverse_iterator(end());};
 			const_reverse_iterator	rbegin() const {return const_reverse_iterator(end());};
@@ -215,6 +215,7 @@ namespace ft
 					pop_back();
 				while (alloc_size > _size)
 					push_back(value);
+				_capacity = alloc_size;
 			};
 			
 			
@@ -222,7 +223,7 @@ namespace ft
 			//for the vector, expressed in terms of elements.
 			size_type			capacity() const
 			{
-				return (this->_capacity);
+				return (_capacity);
 			};
 			
 			
