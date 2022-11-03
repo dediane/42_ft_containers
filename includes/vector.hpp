@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/03 15:25:03 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/03 15:37:02 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,7 +320,7 @@ namespace ft
 					if (_capacity == 0)
 						reserve(1);
 					else
-						reserve(_capacity * 2);
+						reserve(_capacity + 1);
 				}
 				_alloc.construct(&_vector[_size], value);
 				_size++;
@@ -340,7 +340,7 @@ namespace ft
 					if (this->_capacity == 0)
 						reserve(1);
 					else
-						reserve(this->_capacity * 2);
+						reserve(this->_capacity + 1);
 				}
 				this->_size++;
 				for (size_type i = this->_size - 1; i > n_to_pos; i--)
