@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:30:40 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/03 15:20:35 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/03 15:23:46 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void print_vector_std(std::vector<int> vec)
     {
         std::vector<int>::iterator it = vec.begin();
         std::vector<int>::iterator ite = vec.end();
-        std::cout << _CYAN << "namespace STD ->" << _BLACK << "Size = " << vec.size() << std::endl;
+        std::cout << _CYAN << "namespace STD -> " << _BLACK << "Size = " << vec.size() << std::endl;
         std::cout << _CYAN << "namespace STD -> " << _BLACK << "Capacity = " << vec.capacity() << std::endl;
         for (; it != ite; it++)
             std::cout << *it << " | ";
