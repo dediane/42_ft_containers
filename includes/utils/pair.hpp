@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:57:44 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/21 19:14:08 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/08 00:16:43 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ namespace ft {
 	};
 	
 	template< class T1, class T2 >
-	ft::pair<T1,T2>		make_pair( T1 t, T2 u )
+	pair<T1,T2>		make_pair( T1 t, T2 u )
 	{
-		return ft::pair<T1, T2>(t, u);
+		return pair<T1, T2>(t, u);
 	};
 
 	template< class T1, class T2 >

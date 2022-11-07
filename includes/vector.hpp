@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/03 18:27:45 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/07 23:37:02 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -413,6 +413,7 @@ namespace ft
 					tmp++;
 				}
 				_size--;
+				_capacity = _size;
 				return (iterator(position));
 			};
 			
@@ -423,6 +424,7 @@ namespace ft
 					erase(first);
 					last--;
 				}
+				_capacity = _size;
 				return (iterator(first));
 			};
 			

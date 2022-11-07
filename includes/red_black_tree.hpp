@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:58:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/26 19:10:37 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/08 00:29:39 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ namespace ft
 {
 
 	template <typename T>
-	void swap(T &a, T &b)
+	void swap_function(T &a, T &b)
 	{
 		T tmp = a;
 		a = b;
@@ -67,8 +67,8 @@ namespace ft
 
 		public:
 
-			typedef typename ft::map_iterator<value_type, node_pointer>				iterator;
-			typedef typename ft::map_iterator<const value_type, node_pointer>		const_iterator;
+			typedef typename ft::map_iterator<value_type, node_pointer, compare_type>				iterator;
+			typedef typename ft::map_iterator<const value_type, node_pointer, compare_type>		const_iterator;
 		  
 		  
 			RedBlackTree(const compare_type& comp = compare_type(), const node_allocator& node_alloc = node_allocator())
@@ -477,11 +477,11 @@ namespace ft
 
 			void swap_tree(RedBlackTree &a)
 			{
-				ft::swap(_root, a._root);
-				ft::swap(_end, a._end);
-				ft::swap(_size, a._size);
-				ft::swap(_node_alloc, a._node_alloc);
-				ft::swap(_comp, a._comp);
+				ft::swap_function(_root, a._root);
+				ft::swap_function(_end, a._end);
+				ft::swap_function(_size, a._size);
+				ft::swap_function(_node_alloc, a._node_alloc);
+				ft::swap_function(_comp, a._comp);
 
 			}
 			

@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 23:10:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/03 13:25:02 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/08 00:41:58 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 namespace ft{
 
-	template<typename T, typename node_pointer>
+	template<typename T, typename node_pointer, class Compare>
 	class map_iterator
 	{
 		public:
@@ -45,7 +45,7 @@ namespace ft{
 				return *this;
 			}
 
-			operator map_iterator<const T, node_pointer>() const {return map_iterator<const T, node_pointer>(_node);}
+			operator map_iterator<const T, node_pointer, Compare>() const {return map_iterator<const T, node_pointer, Compare>(_node);}
 		//destructor
 			~map_iterator() {}
 			
@@ -62,9 +62,9 @@ namespace ft{
 			node_pointer get_node() const {return _node;}
 
 			template<typename it2>
-			bool operator==(const map_iterator<it2, node_pointer>& b) const {return _node == b.get_node();}
+			bool operator==(const map_iterator<it2, node_pointer, Compare>& b) const {return _node == b.get_node();}
 			template<typename it2>
-			bool operator!=(const map_iterator<it2, node_pointer>& b) const {return _node != b.get_node();}
+			bool operator!=(const map_iterator<it2, node_pointer, Compare>& b) const {return _node != b.get_node();}
 
 		private:
 			void increase() 
