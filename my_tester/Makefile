@@ -6,7 +6,7 @@
 #    By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 23:23:45 by ddecourt          #+#    #+#              #
-#    Updated: 2022/11/07 23:09:42 by ddecourt         ###   ########.fr        #
+#    Updated: 2022/11/08 17:08:42 by ddecourt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address -std=c++98
 
 SRCS =	srcs/main.cpp \
 		srcs/vector_tester.cpp \
+		srcs/map_tester.cpp \
 
 
 CC	=	clang++

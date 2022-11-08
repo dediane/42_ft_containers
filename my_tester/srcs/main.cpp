@@ -6,11 +6,12 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:30:40 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/07 23:19:25 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/08 17:07:45 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector_tester.hpp"
+#include "map_tester.hpp"
 #include <stdio.h>
 #include <string.h>
 
@@ -25,6 +26,7 @@ int main(int ac, char**av)
     if (av[1] && strcmp(av[1],"map") == 0)
     {
         printheader("MAP");
+        testerMap();
     }
     if (av[1] && strcmp(av[1],"stack") == 0)
     {

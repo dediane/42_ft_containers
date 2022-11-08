@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 23:10:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/08 13:31:07 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/08 15:50:39 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ namespace ft{
 			node_pointer get_node() const {return _node;}
 
 			template<typename it2>
-			bool operator==(const map_iterator<it2, node_pointer, Compare>& b) const {return _node == b.get_node();}
+			bool operator==(const map_iterator<it2, node, Compare>& b) const {return _node == b.get_node();}
 			template<typename it2>
-			bool operator!=(const map_iterator<it2, node_pointer, Compare>& b) const {return _node != b.get_node();}
+			bool operator!=(const map_iterator<it2, node, Compare>& b) const {return _node != b.get_node();}
 
 		private:
 			void increase() 

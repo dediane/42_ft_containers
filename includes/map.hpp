@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 23:59:20 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/08 13:20:00 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/08 16:35:24 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ namespace ft {
 		}
 
 		template <class InputIterator>
-		map (typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+		map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type(),
+		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = 0)
 		{
 			static_cast<void>(comp);
 			static_cast<void>(alloc);
@@ -107,20 +108,6 @@ namespace ft {
 			}
 			return *this;
 		}
-
-		/*************************************/
-		/*          Element access           */
-		/*************************************/
-
-		// T& at( const Key& key )
-		// {
-			
-		// }
-
-		// const T& at( const Key& key ) const
-		// {
-			
-		// }
 
 		/*************************************/
 		/*            Iterators              */
@@ -148,22 +135,22 @@ namespace ft {
 
 		reverse_iterator rbegin()
 		{
-			return reverse_iterator(end());
+			return reverse_iterator(_tree.end());
 		}
 		
 		const_reverse_iterator  rbegin() const
 		{
-			return const_reverse_iterator(end());
+			return const_reverse_iterator(_tree.end());
 		}
 
 		reverse_iterator rend()
 		{
-			return reverse_iterator(begin());
+			return reverse_iterator(_tree.begin());
 		}
 		
 		const_reverse_iterator rend() const
 		{
-			return const_reverse_iterator(begin());
+			return const_reverse_iterator(_tree.begin());
 		}
 
 		/*************************************/
@@ -216,7 +203,7 @@ namespace ft {
 		{
 			for (;first != last; first++)
 			{
-				insert(*first);				
+				_tree.insert(*first);				
 			}
 		}
 
@@ -288,6 +275,12 @@ namespace ft {
 		{
 			return (_tree.upper_bound(ft::make_pair(key, mapped_type())));
 		}
+
+		allocator_type get_allocator() const
+		{
+				return allocator_type();
+		}
+
 
 		/*************************************/
 		/*            Observers              */
