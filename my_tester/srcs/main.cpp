@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 13:30:40 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/08 17:07:45 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/08 23:03:48 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int main(int ac, char**av)
         printheader("VECTOR");
         testerVector();
         printheader("MAP");
+        testerMap();
         printheader("STACK");
     }
 
