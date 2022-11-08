@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:57:44 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/08 00:16:43 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/08 13:26:05 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,15 @@ namespace ft {
 		first_type	first;
 		second_type	second;
 	
-		pair() : first(), second() {};
+		pair() : first(T1()), second(T2()) {};
+		
+		pair(const T1& a, const T2& b) : first(a), second(b) {};
 	
 		template<class U, class V>
 		pair(const pair< U, V >& pr) : first(pr.first), second(pr.second) {};
 		
-		~pair() {};
+		//~pair() {};
 
-		pair(const first_type& a, const second_type& b) : first(a), second(b) {};
 
 		pair& operator= (const pair& pr)
 		{

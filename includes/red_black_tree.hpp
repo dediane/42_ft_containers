@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:58:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/08 00:29:39 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/08 14:59:42 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -344,6 +344,8 @@ namespace ft
 							parent->right = NULL;
 					}
 					delete node;
+					_size--;
+					update_end();
 					return sibling;
 				}
 				if (node->left == NULL || node->right == NULL)
@@ -371,6 +373,8 @@ namespace ft
 						else
 							nextNode->color = 0;
 					}
+					_size--;
+					update_end();
 					return sibling;
 				}
 				swap_value(nextNode, node);
@@ -509,7 +513,7 @@ namespace ft
 			ft::pair<iterator, bool>	insert_empty_node(node_pointer node)
 			{
 				_root = node;
-				_root->left = _end;
+				_root->left = NULL;
 				_root->right = _end;
 				_end->parent = _root;
 				_root->color = 0; //black

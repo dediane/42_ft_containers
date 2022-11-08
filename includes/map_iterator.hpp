@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 23:10:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/08 00:41:58 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/08 13:31:07 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 namespace ft{
 
-	template<typename T, typename node_pointer, class Compare>
+	template<typename T, typename node, class Compare>
 	class map_iterator
 	{
 		public:
@@ -28,6 +28,7 @@ namespace ft{
 			typedef value_type&						reference;
 			typedef const value_type*				const_pointer;
 			typedef const value_type& 				const_reference;
+			typedef node							node_pointer;
 
 		protected:
 			node_pointer _node;
@@ -45,15 +46,20 @@ namespace ft{
 				return *this;
 			}
 
-			operator map_iterator<const T, node_pointer, Compare>() const {return map_iterator<const T, node_pointer, Compare>(_node);}
+			operator map_iterator<const T, node, Compare>() const {return map_iterator<const T, node, Compare>(_node);}
 		//destructor
 			~map_iterator() {}
 			
 
 			map_iterator& operator++ (void) {increase(); return *this;}
-			map_iterator operator++ (int) {map_iterator it = *this; ++*this; return it;}
+			map_iterator operator++ (int) 
+			{
+				map_iterator it = *this; 
+				++(*this); 
+				return it;
+			}
 			map_iterator& operator-- (void) {decrease(); return *this;}
-			map_iterator operator-- (int) {map_iterator it = *this; --*this; return it;}
+			map_iterator operator-- (int) {map_iterator it = *this; --(*this); return it;}
 
 			reference operator*() const {return _node->data;}
 			pointer operator->() const {return &_node->data;}

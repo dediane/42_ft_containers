@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 23:59:20 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/26 19:28:23 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/08 13:20:00 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,7 +298,7 @@ namespace ft {
 			return key_compare();
 		}
 
-		map::value_compare value_comp() const
+		value_compare value_comp() const
 		{
 			return value_compare(_tree.comp());
 		}
@@ -311,9 +311,19 @@ namespace ft {
 	template< class Key, class T, class Compare, class Alloc >
 	bool operator==( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs )
 	{
+		typename map<Key, T, Compare, Alloc>::const_iterator it = lhs.begin();
+		typename map<Key, T, Compare, Alloc>::const_iterator it2 = lhs.begin();
+		
 		if (lhs.size() != rhs.size())
 			return false;
-		return equal(lhs.begin(), lhs.end(), rhs.begin());
+		while (it != lhs.end())
+		{
+			if (*it != *it2)
+				return false;
+			it++;
+			it2++;
+		}
+		return true;
 	}
 
 	template< class Key, class T, class Compare, class Alloc >
