@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:58:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/08 17:08:20 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/09 10:24:46 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 #include <iostream>
 #include "map_iterator.hpp"
-
-
 
 namespace ft
 {
@@ -584,7 +582,7 @@ namespace ft
 			node_pointer minimum() const
 			{
 				node_pointer min = _root;
-				while (min->left != NULL && min) 
+				while (min && min->left != NULL) 
 				{
 					min = min->left;
 				}
@@ -594,7 +592,7 @@ namespace ft
 			node_pointer maximum() const
 			{
 				node_pointer max = _root;
-				while (max->right != NULL && max) 
+				while (max && max->right != NULL && max->right != _end) 
 				{
 					max = max->right;
 				}
