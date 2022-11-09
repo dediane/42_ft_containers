@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:58:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/09 10:24:46 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/09 13:54:34 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,7 @@ namespace ft
 				
 				for (; it != ite; it++)
 				{
-					if (!(_comp(value.first, it->first)))
+					if (_comp(value.first, it->first))
 						return it;
 				}
 				return it;
@@ -660,10 +660,10 @@ namespace ft
 
 			node_pointer successor(node_pointer node) 
 			{
-				if (node->right && node->right != NULL) 
+				if (node->right != NULL) 
 				{
 					node = node->right;
-					while(node->right)
+					while(node->left != NULL)
 						node = node->left;
 					return node;
 				}
@@ -696,7 +696,7 @@ namespace ft
 			node_pointer	replace(node_pointer node)
 			{
 				if (node->left != NULL && node->right != NULL && node->right != _end)
-					return successor(node->right);
+					return successor(node);
 				if (!node->left && !node->right)
 					return NULL;
 				if (node->left != NULL)

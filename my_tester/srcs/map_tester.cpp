@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:39:05 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/09 11:23:27 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/09 14:45:21 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void map_constructor_tester()
         print_map_std(stdfirst);
         print_map_std(stdsecond);
         print_map_std(stdthird);
+
         first.size() == stdfirst.size() ? printresult(1): printresult(0);
         second.size() == stdsecond.size() ? printresult(1): printresult(0);
         third.size() == stdthird.size() ? printresult(1): printresult(0);
@@ -336,8 +337,82 @@ void map_modifiers()
         map2['A'] == maap2['A'] ? printresult(1):printresult(0);
         map2['C'] == maap2['C'] ? printresult(1):printresult(0);
     }
+    std::cout << std::endl;
     std::cout << _BBLUE << "** function erase(position) **" << _BLACK << std::endl << std::endl;
+    {
+        ft::map<T1, T2>  map;
+        std::map<T1, T2> maap;
+
+        map.insert(ft::pair<T1, T2> ('A', 1));
+        map.insert(ft::pair<T1, T2> ('B', 10));
+        map.insert(ft::pair<T1, T2> ('C', 100));
+        map.insert(ft::pair<T1, T2> ('D', 1000));
+        map.insert(ft::pair<T1, T2> ('E', 10000));
+
+        maap.insert(std::pair<T1, T2> ('A', 1));
+        maap.insert(std::pair<T1, T2> ('B', 10));
+        maap.insert(std::pair<T1, T2> ('C', 100));
+        maap.insert(std::pair<T1, T2> ('D', 1000));
+        maap.insert(std::pair<T1, T2> ('E', 10000));
+
+        std::cout << _BLUE << "before erase called:" << _BLACK << std::endl;
+        print_map_ft(map);
+        print_map_std(maap);
+
+        ft::map<T1, T2>::iterator it = map.begin();
+        std::map<T1, T2>::iterator it2 = maap.begin();
+        map.erase(it);
+        it = map.begin();
+        maap.erase(it2);
+        it2 = maap.begin();
+        map.erase(it);
+        it = map.begin();
+        maap.erase(it2);
+        it2 = maap.begin();
+        
+        std::cout << _BLUE << "before erase called 2 times:" << _BLACK << std::endl;
+        print_map_ft(map);
+        print_map_std(maap);
+        map.size() == maap.size() ? printresult(1):printresult(0);
+    }
+    std::cout << std::endl;
     std::cout << _BBLUE << "** function erase(key) **" << _BLACK << std::endl << std::endl;
+    {
+        ft::map<T1, T2>  map;
+        std::map<T1, T2> maap;
+
+        map.insert(ft::pair<T1, T2> ('A', 1));
+        map.insert(ft::pair<T1, T2> ('B', 10));
+        map.insert(ft::pair<T1, T2> ('C', 100));
+        map.insert(ft::pair<T1, T2> ('D', 1000));
+        map.insert(ft::pair<T1, T2> ('E', 10000));
+
+        maap.insert(std::pair<T1, T2> ('A', 1));
+        maap.insert(std::pair<T1, T2> ('B', 10));
+        maap.insert(std::pair<T1, T2> ('C', 100));
+        maap.insert(std::pair<T1, T2> ('D', 1000));
+        maap.insert(std::pair<T1, T2> ('E', 10000));
+
+        std::cout << _BLUE << "before erase called:" << _BLACK << std::endl;
+        print_map_ft(map);
+        print_map_std(maap);
+
+        map.erase('C');
+        maap.erase('C');
+
+        map.erase('A');
+        maap.erase('A');
+
+        std::cout << _BLUE << "before erase called:" << _BLACK << std::endl;
+        print_map_ft(map);
+        print_map_std(maap);
+        map.size() == maap.size() ? printresult(1):printresult(0);
+
+    }
+        std::cout << _BBLUE << "** function erase(range) **" << _BLACK << std::endl << std::endl;
+    {
+       
+    }
     std::cout << _BBLUE << "** function erase(range) **" << _BLACK << std::endl << std::endl;
     std::cout << _BBLUE << "** function swap(member function) **" << _BLACK << std::endl << std::endl;
     std::cout << _BBLUE << "** function swap(function template) **" << _BLACK << std::endl << std::endl;

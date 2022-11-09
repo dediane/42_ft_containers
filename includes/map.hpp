@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 23:59:20 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/08 16:35:24 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/09 14:51:24 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,8 @@ namespace ft {
 
 		map& operator= (const map& other)
 		{
-			if (*this != other)
-			{
-				clear();
-				insert(other.begin(), other.end());
-			}
+			clear();
+			insert(other.begin(), other.end());
 			return *this;
 		}
 
