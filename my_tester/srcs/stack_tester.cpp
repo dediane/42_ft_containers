@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 15:25:20 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/18 19:20:32 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/19 03:09:45 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,9 @@ void stack_push_pop_tester()
     std::stack<int> A;
     for (int i = 0; i < 100; i++){a.push(i);}
     for (int i = 0; i < 100; i++){A.push(i);}
+    a.size() == A.size() ? printresult(1) : printresult(0);
+    for (int i = 0; i < 100; i++){a.pop();}
+    for (int i = 0; i < 100; i++){A.pop();}
     a.size() == A.size() ? printresult(1) : printresult(0);
 }
 

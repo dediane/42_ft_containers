@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:39:05 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/09 14:45:21 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/19 03:18:49 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void    print_map_ft(ft::map<T1, T2> map)
 			std::cout << it->second << " | ";
         std::cout << std::endl << "____________________________" << std::endl;
     }
-    
 }
 
 void    print_map_std(std::map<T1, T2> map)
@@ -407,12 +406,35 @@ void map_modifiers()
         print_map_ft(map);
         print_map_std(maap);
         map.size() == maap.size() ? printresult(1):printresult(0);
+    }
 
-    }
-        std::cout << _BBLUE << "** function erase(range) **" << _BLACK << std::endl << std::endl;
     {
-       
+        std::cout << _BBLUE << "** function erase(range) **" << _BLACK << std::endl << std::endl;
+        ft::map<T1, T2>  map;
+        std::map<T1, T2> maap;
+
+        map.insert(ft::pair<T1, T2> ('A', 1));
+        map.insert(ft::pair<T1, T2> ('B', 10));
+        map.insert(ft::pair<T1, T2> ('C', 100));
+        map.insert(ft::pair<T1, T2> ('D', 1000));
+        map.insert(ft::pair<T1, T2> ('E', 10000));
+
+        maap.insert(std::pair<T1, T2> ('A', 1));
+        maap.insert(std::pair<T1, T2> ('B', 10));
+        maap.insert(std::pair<T1, T2> ('C', 100));
+        maap.insert(std::pair<T1, T2> ('D', 1000));
+        maap.insert(std::pair<T1, T2> ('E', 10000));
+        print_map_ft(map);
+        print_map_std(maap);
+        ft::map<T1, T2>::iterator it = map.begin();
+        std::map<T1, T2>::iterator it2 = maap.begin();
+        ft::map<T1, T2>::iterator ite = map.end();
+        std::map<T1, T2>::iterator ite2 = maap.end();
+        map.erase(++it, --ite);
+        maap.erase(++it2, --ite2);
+        map.size() == maap.size() ? printresult(1) : printresult(0);
     }
+
     std::cout << _BBLUE << "** function erase(range) **" << _BLACK << std::endl << std::endl;
     std::cout << _BBLUE << "** function swap(member function) **" << _BLACK << std::endl << std::endl;
     std::cout << _BBLUE << "** function swap(function template) **" << _BLACK << std::endl << std::endl;
