@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 15:25:08 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/19 03:08:20 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/21 00:39:46 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define STACK_TESTER_HPP
 
 #include "../../includes/stack.hpp"
-#include <stack>
+//#include <stack>
 
 #include <iostream>
 #include <string>
@@ -25,6 +25,6 @@
 # define _RED "\033[1m\033[31m"
 # define _BBLUE "\033[1;34m"
 
-void testerStack();
+//void testerStack();
 
 #endif

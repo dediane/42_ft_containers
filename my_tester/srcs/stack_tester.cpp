@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 15:25:20 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/19 03:09:45 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/21 00:52:41 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,73 @@ void stack_push_pop_tester()
     a.size() == A.size() ? printresult(1) : printresult(0);
 }
 
+void stack_operator_tester()
+{
+    std::cout << std::endl << _GREEN << "                                    RELATIONAL OPERATOR                     " << _BLACK << std::endl;
+    ft::stack<int> a;
+    std::stack<int> A;
+    ft::stack<int> b;
+    std::stack<int> B;
+    for (int i = 0; i < 100; i++){a.push(i);}
+    for (int i = 0; i < 100; i++){A.push(i);}
+    for (int i = 0; i < 10; i++){b.push(i);}
+    for (int i = 0; i < 10; i++){B.push(i);}
+    
+    int res_ft = 0;
+    int res_std = 0;
+    if (a == b)
+        res_ft = 1;
+    if (A == B)
+        res_std = 1;
+    std::cout << "test == : " << std::endl;
+    res_ft == res_std ? printresult(1) : printresult(0);
+    
+    res_ft = 0;
+    res_std = 0;
+    if (a > b)
+        res_ft = 1;
+    if (A > B)
+        res_std = 1;
+    std::cout << "test > : " << std::endl;
+    res_ft == res_std ? printresult(1) : printresult(0);
+    
+    res_ft = 0;
+    res_std = 0;
+    if (a < b)
+        res_ft = 1;
+    if (A < B)
+        res_std = 1;
+    std::cout << "test < : " << std::endl;
+    res_ft == res_std ? printresult(1) : printresult(0);
+    
+    res_ft = 0;
+    res_std = 0;
+    if (a <= b)
+        res_ft = 1;
+    if (A <= B)
+        res_std = 1;
+    std::cout << "test <= : " << std::endl;
+    res_ft == res_std ? printresult(1) : printresult(0);
+    
+    res_ft = 0;
+    res_std = 0;
+    if (a >= b)
+        res_ft = 1;
+    if (A >= B)
+        res_std = 1;
+    std::cout << "test >= : " << std::endl;
+    res_ft == res_std ? printresult(1) : printresult(0);
+    
+    res_ft = 0;
+    res_std = 0;
+    if (a != b)
+        res_ft = 1;
+    if (A != B)
+        res_std = 1;
+    std::cout << "test != : " << std::endl;
+    res_ft == res_std ? printresult(1) : printresult(0);
+}
+
 void testerStack()
 {
     stack_constructor_tester();
@@ -167,8 +234,5 @@ void testerStack()
     stack_size_tester();
     stack_top_tester();
     stack_push_pop_tester();
-    // stack_iterator_test();
-    // stack_max_capacity();
-    // stack_element_access();
-    // stack_modifiers();
+    stack_operator_tester();
 }

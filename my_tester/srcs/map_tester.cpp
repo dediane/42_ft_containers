@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 16:39:05 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/19 03:18:49 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/21 00:44:28 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -436,9 +436,56 @@ void map_modifiers()
     }
 
     std::cout << _BBLUE << "** function erase(range) **" << _BLACK << std::endl << std::endl;
-    std::cout << _BBLUE << "** function swap(member function) **" << _BLACK << std::endl << std::endl;
-    std::cout << _BBLUE << "** function swap(function template) **" << _BLACK << std::endl << std::endl;
     
+    std::cout << _BBLUE << "** function swap(member function) **" << _BLACK << std::endl << std::endl;
+    {
+        ft::map<T1, T2>  foo;
+        ft::map<T1, T2>  bar;
+        std::map<T1, T2> fooo;
+        std::map<T1, T2> baar;
+        
+        foo['1'] = 10;
+		foo['2'] = 20;
+		bar['7'] = 70;
+		bar['8'] = 80;
+		bar['9'] = 90;
+        
+        fooo['1'] = 10;
+		fooo['2'] = 20;
+		baar['7'] = 70;
+		baar['8'] = 80;
+		baar['9'] = 90;
+        
+        std::cout << "Print foo before swap\n";
+		print_map_ft(foo);
+		std::cout << "Print bar before swap\n";
+		print_map_ft(bar);
+		foo.swap(bar);
+		std::cout << "Print foo after swap\n";
+		print_map_ft(foo);
+		std::cout << "Print bar after swap\n";
+		print_map_ft(bar);
+        
+        std::cout << "Print fooo before swap\n";
+		print_map_std(fooo);
+		std::cout << "Print baar before swap\n";
+		print_map_std(baar);
+		fooo.swap(baar);
+		std::cout << "Print fooo after swap\n";
+		print_map_std(fooo);
+		std::cout << "Print baar after swap\n";
+		print_map_std(baar);
+        
+        foo['7'] == fooo['7'] ? printresult(1) : printresult(0);
+        bar['1'] == baar['1'] ? printresult(1) : printresult(0);
+        std::cout << std::endl;
+        std::cout << _BBLUE << "** function swap(function template) **" << _BLACK << std::endl << std::endl;
+        swap(foo, bar);
+        swap(fooo, baar);
+        
+        foo['1'] == fooo['1'] ? printresult(1) : printresult(0);
+        bar['7'] == baar['7'] ? printresult(1) : printresult(0);
+    }
 }
 
 void testerMap()
