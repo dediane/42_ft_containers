@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 23:59:20 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/09 14:51:24 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/21 18:10:18 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include "utils/equal.hpp"
 #include "utils/enable_if.hpp"
 #include "utils/is_integral.hpp"
+#include "utils/lexicographical_compare.hpp"
 #include "red_black_tree.hpp"
 
 namespace ft {
@@ -239,7 +240,7 @@ namespace ft {
 		}
 
 		const_iterator find( const Key& key ) const
-		{
+		{	
 			return (_tree.find(ft::make_pair(key, mapped_type())));
 		}
 
@@ -325,7 +326,7 @@ namespace ft {
 	template< class Key, class T, class Compare, class Alloc >
 	bool operator<( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs )
 	{
-		return lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end() );
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end() );
 	}
 
 	template< class Key, class T, class Compare, class Alloc > 

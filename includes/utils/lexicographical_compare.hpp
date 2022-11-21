@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 17:38:06 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/18 17:42:48 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/21 18:04:06 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ namespace ft{
     }
     return (first2!=last2);
     }
-
 }
 
 #endif

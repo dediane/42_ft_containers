@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/07 23:37:02 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/21 17:51:32 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -456,7 +456,7 @@ namespace ft
 	{
 			if (lhs.size() != rhs.size())
 					return false;
-				return equal(lhs.begin(), lhs.end(), rhs.begin());
+				return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 	}
 
 	template <class T, class Alloc>
