@@ -6,9 +6,18 @@
 #    By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 23:23:45 by ddecourt          #+#    #+#              #
-#    Updated: 2022/11/03 18:42:14 by ddecourt         ###   ########.fr        #
+#    Updated: 2022/11/21 19:11:54 by ddecourt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+ifneq (,$(findstring xterm,${TERM}))
+	GREEN        := $(shell tput -Txterm setaf 2)
+	RESET := $(shell tput -Txterm sgr0)
+else
+	GREEN        := ""
+	RESET        := ""
+endif
+
 
 NAME =	ft_containers
 
@@ -19,6 +28,8 @@ SRCS =	srcs/main.cpp \
 
 CC	=	clang++
 RM	=	rm -f
+
+MESSAGE = Compilation ok - ready to test
 
 INCLUDES = -I./includes
 
@@ -33,6 +44,7 @@ all : $(NAME)
 
 $(NAME)	: $(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDES) $^ -o $(NAME)
+	@echo "${GREEN}Compilation OK - ready to test${RESET}"
 
 fclean		: clean
 	$(RM) $(NAME)
