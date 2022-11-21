@@ -6,7 +6,7 @@
 #    By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 23:23:45 by ddecourt          #+#    #+#              #
-#    Updated: 2022/11/21 19:11:54 by ddecourt         ###   ########.fr        #
+#    Updated: 2022/11/21 19:17:14 by ddecourt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ all : $(NAME)
 
 $(NAME)	: $(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDES) $^ -o $(NAME)
-	@echo "${GREEN}Compilation OK - ready to test${RESET}"
+	@echo "${GREEN}\nCompilation OK - ready to test\n${RESET}"
 
 fclean		: clean
 	$(RM) $(NAME)

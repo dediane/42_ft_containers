@@ -6,9 +6,17 @@
 #    By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/05/14 23:23:45 by ddecourt          #+#    #+#              #
-#    Updated: 2022/11/18 16:52:11 by ddecourt         ###   ########.fr        #
+#    Updated: 2022/11/21 19:16:09 by ddecourt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+ifneq (,$(findstring xterm,${TERM}))
+	GREEN        := $(shell tput -Txterm setaf 2)
+	RESET := $(shell tput -Txterm sgr0)
+else
+	GREEN        := ""
+	RESET        := ""
+endif
 
 NAME =	ft_containers_tester
 
@@ -35,6 +43,7 @@ all : $(NAME)
 
 $(NAME)	: $(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDES) $^ -o $(NAME)
+	@echo "$(GREEN)\nTester Compilation done - to start the tester run:\n $(RESET)./ft_containers_tester <container>\n\n$(GREEN) To run all containers \n$(RESET)./ft_containers_tester all"
 
 fclean		: clean
 	$(RM) $(NAME)
