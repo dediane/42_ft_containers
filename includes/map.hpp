@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 23:59:20 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/21 18:10:18 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/24 19:00:02 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,16 @@ namespace ft {
 		}
 
 		mapped_type& operator[](const key_type& key)
+		{
+			return (insert(ft::make_pair(key, mapped_type())).first)->second;
+		}
+
+		T& at( const Key& key )
+		{
+			return (insert(ft::make_pair(key, mapped_type())).first)->second;
+		}
+
+		const T& at( const Key& key ) const
 		{
 			return (insert(ft::make_pair(key, mapped_type())).first)->second;
 		}

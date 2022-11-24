@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/21 17:51:32 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/24 19:00:10 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,11 +121,17 @@ namespace ft
 					_alloc.destroy(&_vector[i]);
 				_alloc.deallocate(_vector, _capacity);
 			};
+
+			allocator_type get_allocator() const
+			{
+				return _alloc;
+			}
 			
 			vector &operator=(const vector &other)
 			{
-				vector	temp(other);
-				this->swap(temp);
+				if (*this == other)
+					return (*this);
+				assign(other.begin(), other.end());
 				return (*this);
 			};
 		
@@ -430,12 +436,14 @@ namespace ft
 			
 			void swap (vector& a)
 			{
-				value_type *x_vector = this->_vector;
-				size_type	x_capacity = this->_capacity;
-				size_type	x_size = this->_size;
-				this->_vector = a._vector;
-				this->_capacity = a._capacity;
-				this->_size = a._size;
+				//std::swap(this, a);
+				
+				value_type *x_vector = _vector;
+				size_type	x_capacity = _capacity;
+				size_type	x_size = _size;
+				_vector = a._vector;
+				_capacity = a._capacity;
+				_size = a._size;
 				a._vector = x_vector;
 				a._capacity = x_capacity;
 				a._size = x_size;
@@ -488,6 +496,12 @@ namespace ft
 	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
 		return (!(lhs < rhs));
+	}
+
+	template <class T, class Alloc>
+	void swap(vector<T,Alloc>& lhs, vector<T,Alloc>& rhs )
+	{
+		std::swap(lhs, rhs);
 	}
 }	
 
