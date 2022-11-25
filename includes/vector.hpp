@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/24 19:00:10 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/25 04:34:44 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 #include "utils/is_integral.hpp"
 #include "utils/lexicographical_compare.hpp"
 #include "utils/equal.hpp"
+//#include "utils/swap.hpp"
 
 namespace ft
 {
@@ -435,18 +436,19 @@ namespace ft
 			};
 			
 			void swap (vector& a)
-			{
-				//std::swap(this, a);
-				
-				value_type *x_vector = _vector;
-				size_type	x_capacity = _capacity;
-				size_type	x_size = _size;
+			{	
+				pointer_type x_vector = _vector;
+				size_type	 x_capacity = _capacity;
+				size_type	 x_size = _size;
+				allocator_type x_alloc = _alloc;
 				_vector = a._vector;
 				_capacity = a._capacity;
 				_size = a._size;
+				_alloc = a._alloc;
 				a._vector = x_vector;
 				a._capacity = x_capacity;
 				a._size = x_size;
+				a._alloc = x_alloc;
 			}
 			
 			void clear()
@@ -477,7 +479,6 @@ namespace ft
 	bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
 		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end() );
-		//return &(lhs) < &(rhs);
 	}
 
 	template <class T, class Alloc>
@@ -501,7 +502,7 @@ namespace ft
 	template <class T, class Alloc>
 	void swap(vector<T,Alloc>& lhs, vector<T,Alloc>& rhs )
 	{
-		std::swap(lhs, rhs);
+		lhs.swap(rhs);
 	}
 }	
 
