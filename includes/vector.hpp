@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/25 04:34:44 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/25 14:04:13 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,25 +102,20 @@ namespace ft
 			
 			//Constructs a container with a copy of each of the elements in x, in the same order.
 			vector(const vector &rhs)
-			:  _alloc(rhs._alloc), _vector(NULL), _size(0), _capacity(rhs._capacity)
+			:  _alloc(rhs._alloc), _vector(NULL), _size(rhs._size), _capacity(rhs._capacity)
 			{
 				if(rhs._vector)
 				{
-					_size = rhs.size();
 					_vector = _alloc.allocate(_capacity);
 					for (size_type i = 0; i < _size ; i++)
-					{
 						_alloc.construct(&_vector[i], rhs._vector[i]);
-					}
 				}
-				//*this = rhs;
 			};
 			
 			~vector(void)
 			{
-				for (size_type i = 0; i < _size; i++)
-					_alloc.destroy(&_vector[i]);
-				_alloc.deallocate(_vector, _capacity);
+					clear();
+					_alloc.deallocate(_vector, _capacity);
 			};
 
 			allocator_type get_allocator() const
@@ -155,7 +150,7 @@ namespace ft
 					this->_alloc.construct(&this->_vector[_size], *first);
 					this->_size++;
 				}
-			return ;
+				return ;
 			};
 			
 			void assign(size_type n, const value_type& value)
@@ -244,10 +239,9 @@ namespace ft
 			//Requests that the vector capacity be 
 			//at least enough to contain alloc_size elements.
 			void					reserve(size_type alloc_size) 
-			{
+			{		
 				if (alloc_size > _capacity)
 				{
-
 					pointer_type newvector = _alloc.allocate(alloc_size);
 					for (size_type i = 0; i < _size; i++)
 					{
@@ -417,8 +411,11 @@ namespace ft
 				while (tmp + 1 != end())
 				{
 					*tmp = *(tmp + 1);
+					_alloc.destroy(tmp.get_ptr());
+					_alloc.construct(tmp.get_ptr(), *(tmp + 1));
 					tmp++;
 				}
+				_alloc.destroy(tmp.get_ptr());
 				_size--;
 				_capacity = _size;
 				return (iterator(position));
@@ -453,7 +450,9 @@ namespace ft
 			
 			void clear()
 			{
-				erase(begin(), end());
+				for (size_type i = 0; i < _size; i++)
+					_alloc.destroy(_vector + i);
+				_size = 0;
 			};
 	};
 
@@ -465,8 +464,8 @@ namespace ft
 	bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
 			if (lhs.size() != rhs.size())
-					return false;
-				return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+				return false;
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 	}
 
 	template <class T, class Alloc>
