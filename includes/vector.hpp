@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/15 12:05:51 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/25 14:04:13 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/27 17:15:12 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ namespace ft
 			
 			//Constructs a container with a copy of each of the elements in x, in the same order.
 			vector(const vector &rhs)
-			:  _alloc(rhs._alloc), _vector(NULL), _size(rhs._size), _capacity(rhs._capacity)
+			:  _alloc(rhs._alloc), _vector(NULL), _size(rhs._size), _capacity(rhs._size)
 			{
 				if(rhs._vector)
 				{
@@ -115,7 +115,8 @@ namespace ft
 			~vector(void)
 			{
 					clear();
-					_alloc.deallocate(_vector, _capacity);
+					if (_vector)
+						_alloc.deallocate(_vector, _capacity);
 			};
 
 			allocator_type get_allocator() const
@@ -144,7 +145,11 @@ namespace ft
 					temp++;
 				}
 				this->clear();
-				this->reserve(n);
+				if(_size * 2 > n)
+					reserve(_size * 2);
+				else
+					reserve(n);
+						
 				for (; first != last; ++first)
 				{
 					this->_alloc.construct(&this->_vector[_size], *first);
@@ -155,9 +160,14 @@ namespace ft
 			
 			void assign(size_type n, const value_type& value)
 			{
-				if ( n > this->_capacity)
-					reserve(n);
-				for (size_type i = 0; i < this->_size; i++)
+				if (n > _capacity) 
+				{
+					if(_size * 2 > n)
+						reserve(_size * 2);
+					else
+						reserve(n);
+				}
+				for (size_type i = 0; i < _size; i++)
 					_alloc.destroy(&_vector[i]);
 				for (size_type i = 0; i < n ; i++)
 					_alloc.construct(&_vector[i], value);
@@ -213,11 +223,37 @@ namespace ft
 			//Resizes the container so that it contains alloc_size elements.
 			void					resize(size_type alloc_size, value_type value = value_type())
 			{
-				while (alloc_size < _size)
-					pop_back();
-				while (alloc_size > _size)
-					push_back(value);
-				_capacity = alloc_size;
+
+				if (alloc_size > max_size())
+					throw(std::length_error("vector::resize"));
+
+				if(_size >= alloc_size) 
+				{
+					while(_size > alloc_size)
+					{
+						_alloc.destroy(&_vector[_size - 1]);
+						_size--;
+					}
+				}
+				else
+				{
+					if (alloc_size > _size * 2)
+						reserve(alloc_size);
+					else
+						reserve(_size * 2);
+					while (_size < alloc_size)
+					{
+						_alloc.construct(_vector + _size, value);
+						_size++;
+					}
+				}
+
+				
+				// while (alloc_size < _size)
+				// 	pop_back();
+				// while (alloc_size > _size)
+				// 	push_back(value);
+				// // _capacity = alloc_size;
 			};
 			
 			
@@ -240,23 +276,27 @@ namespace ft
 			//at least enough to contain alloc_size elements.
 			void					reserve(size_type alloc_size) 
 			{		
+				if (alloc_size > max_size()) {
+					throw std::length_error("vector::reserve");
+				}
+				
 				if (alloc_size > _capacity)
 				{
+					size_type saved = _capacity;
 					pointer_type newvector = _alloc.allocate(alloc_size);
+					_capacity = alloc_size;
 					for (size_type i = 0; i < _size; i++)
 					{
 						_alloc.construct(&newvector[i], _vector[i]);
 						_alloc.destroy(&_vector[i]);
 					}
-					_alloc.deallocate(_vector, _capacity = alloc_size);
+					if (_vector)
+						_alloc.deallocate(_vector, saved);
 					_vector = newvector;
-					_capacity = alloc_size;
 				}
 			};
 
 //_______________________________________________________________________________________________________________
-
-
 			
 			//**********************************************//
 			// Element access                               //
@@ -317,12 +357,12 @@ namespace ft
 
 			void push_back (const value_type& value)
 			{
-				if (_size == _capacity)
+				if(_size + 1 > _capacity)
 				{
 					if (_capacity == 0)
 						reserve(1);
 					else
-						reserve(_capacity + 1);
+						reserve(_size * 2);
 				}
 				_alloc.construct(&_vector[_size], value);
 				_size++;
@@ -332,40 +372,40 @@ namespace ft
 			{
 				--_size;
 				_alloc.destroy(&_vector[_size]);
-				_capacity = size();
 			};
 			
 			iterator insert(iterator position, const value_type& val)
 			{
-				size_type n_to_pos = position - this->begin();
-				if (this->_size + 1 > this->_capacity)
+				size_type n_to_pos = position - begin();
+				if (_size + 1 > _capacity)
 				{
-					if (this->_capacity == 0)
+					if (_capacity == 0)
 						reserve(1);
 					else
-						reserve(this->_capacity + 1);
+						reserve(_size * 2);
 				}
-				this->_size++;
-				for (size_type i = this->_size - 1; i > n_to_pos; i--)
+				_size++;
+				for (size_type i = _size - 1; i > n_to_pos; i--)
 				{
-					this->_alloc.construct(&(this->_vector[i]), (this->_vector[i - 1]));
-					this->_alloc.destroy(&(this->_vector[i - 1]));
+					_alloc.construct(&(_vector[i]), (_vector[i - 1]));
+					_alloc.destroy(&(_vector[i - 1]));
 				}
-				this->_alloc.construct(&(this->_vector[n_to_pos]), (val));
-				return (iterator(&this->_vector[n_to_pos]));
+				_alloc.construct(&(_vector[n_to_pos]), (val));
+				return (iterator(&_vector[n_to_pos]));
 			};
 			
 			void insert(iterator position, size_type n, const value_type& val)
 			{
+				size_type	backup = position - this->begin();
 				if (this->_size + n > this->_capacity)
 				{
-					size_type	backup = position - this->begin();
 					if (this->_capacity == 0)
 						reserve(n);
 					else
 					{
-						if (this->_size * 2 >= this->_size + n)
-							reserve(this->_size * 2);
+						// if (this->_size * 2 >= this->_size + n)
+						if(_size + n < _size * 2) 
+							reserve(this->_size * 2);				
 						else
 							reserve(this->_size + n);
 					}
@@ -417,7 +457,6 @@ namespace ft
 				}
 				_alloc.destroy(tmp.get_ptr());
 				_size--;
-				_capacity = _size;
 				return (iterator(position));
 			};
 			
@@ -428,7 +467,6 @@ namespace ft
 					erase(first);
 					last--;
 				}
-				_capacity = _size;
 				return (iterator(first));
 			};
 			

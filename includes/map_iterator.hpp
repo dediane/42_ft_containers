@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 23:10:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/08 15:50:39 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/26 21:52:56 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,35 @@ namespace ft{
 			~map_iterator() {}
 			
 
-			map_iterator& operator++ (void) {increase(); return *this;}
+			map_iterator& operator++ (void) {
+				if (_node && _node->right)
+				{
+					_node = _node->right;
+					while (_node->left)
+						_node = _node->left;
+				}
+				else if (_node && _node->parent)
+				{
+					node_pointer save = _node;
+					node_pointer tmp = _node->parent;
+					while (tmp && _node == tmp->right)
+					{
+						if (tmp->parent == NULL)
+						{
+							_node = save->parent;
+							return *this;
+						}
+						_node = tmp;
+						tmp = tmp->parent;
+					}
+					_node = tmp;
+				}
+				return *this;
+			}
 			map_iterator operator++ (int) 
 			{
-				map_iterator it = *this; 
-				++(*this); 
+				map_iterator it(*this);
+				operator++();
 				return it;
 			}
 			map_iterator& operator-- (void) {decrease(); return *this;}
@@ -90,7 +114,7 @@ namespace ft{
 						if (_node->parent == NULL) 
 						{
 							_node = temp->parent;
-							break;
+							return ;
 						}
 						_node = tmp_parent;
 						tmp_parent = tmp_parent->parent;

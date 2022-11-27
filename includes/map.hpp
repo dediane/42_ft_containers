@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 23:59:20 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/24 19:00:02 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/27 20:01:22 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,6 @@
 
 namespace ft {
 
-	template <typename Data>
-	struct node {
-		Data data;
-		node *left;
-		node *right;
-		node *parent;
-		bool last;
-		node(Data data, node *left, node *right, node *parent, bool last = false) : data(data), left(left), right(right), parent(parent), last(last) {}
-		~node() {}
-	};
-	
 	//https://cplusplus.com/reference/map/map/
 	template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key,T> > >
 	class map
@@ -60,7 +49,7 @@ namespace ft {
 			typedef ft::reverse_iterator<const_iterator>											const_reverse_iterator;
 
 			
-			class value_compare	//https://cplusplus.com/reference/map/map/value_comp/
+			class value_compare//https://cplusplus.com/reference/map/map/value_comp/
 			{
 				friend class map;
 				protected:
@@ -101,9 +90,9 @@ namespace ft {
 		~map(){}
 
 		map& operator= (const map& other)
-		{
-			clear();
-			insert(other.begin(), other.end());
+		{		
+				clear();
+				insert(other.begin(), other.end());
 			return *this;
 		}
 
@@ -175,14 +164,15 @@ namespace ft {
 			return (insert(ft::make_pair(key, mapped_type())).first)->second;
 		}
 
-		T& at( const Key& key )
+		mapped_type& at(const key_type& key)
 		{
-			return (insert(ft::make_pair(key, mapped_type())).first)->second;
+			return (_tree.at(ft::make_pair(key, mapped_type())).first)->second;
 		}
 
-		const T& at( const Key& key ) const
+		const mapped_type& at(const key_type& key) const
 		{
-			return (insert(ft::make_pair(key, mapped_type())).first)->second;
+			return (_tree.at(ft::make_pair(key, mapped_type())).first)->second;
+
 		}
 
 		/*************************************/
@@ -313,7 +303,7 @@ namespace ft {
 	bool operator==( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs )
 	{
 		typename map<Key, T, Compare, Alloc>::const_iterator it = lhs.begin();
-		typename map<Key, T, Compare, Alloc>::const_iterator it2 = lhs.begin();
+		typename map<Key, T, Compare, Alloc>::const_iterator it2 = rhs.begin();
 		
 		if (lhs.size() != rhs.size())
 			return false;
@@ -358,7 +348,7 @@ namespace ft {
 	}
 
 	template< class Key, class T, class Compare, class Alloc >
-	void swap( const map<Key,T,Compare,Alloc>& lhs, const map<Key,T,Compare,Alloc>& rhs )
+	void swap( map<Key,T,Compare,Alloc>& lhs, map<Key,T,Compare,Alloc>& rhs )
 	{
 		return (lhs.swap(rhs));
 	}

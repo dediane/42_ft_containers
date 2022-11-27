@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 23:59:17 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/10/18 15:02:42 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/27 22:27:23 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@ namespace ft
 		protected:
 			Container c;
 		public:
-			typedef typename Container::value_type		value_type;
-			typedef Container		container_type;
-			typedef typename Container::size_type			size_type;
-			
+			typedef typename Container::value_type				value_type;
+			typedef Container									container_type;
+			typedef typename Container::size_type				size_type;
+			typedef typename Container::reference				reference;
+			typedef typename Container::const_reference			const_reference;
 			
 			//******************************//
 			//Member functions              //

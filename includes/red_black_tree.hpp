@@ -6,7 +6,7 @@
 /*   By: ddecourt <ddecourt@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:58:36 by ddecourt          #+#    #+#             */
-/*   Updated: 2022/11/09 13:54:34 by ddecourt         ###   ########.fr       */
+/*   Updated: 2022/11/27 22:20:51 by ddecourt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ namespace ft
 			struct Node 
 			{
 			  value_type		data;
-			  bool				color; //  black = 0  | red = 1
+			  bool				color;//  black = 0  | red = 1
 			  Node				*left;
 			  Node				*right;
 			  Node				*parent;
@@ -114,12 +114,12 @@ namespace ft
 
 			iterator	begin()
 			{
-				return iterator(minimum());
+				return minimum();
 			}
 
 			const_iterator	begin() const
 			{
-				return const_iterator(minimum());
+				return minimum();
 			}
 
 			iterator	end()
@@ -137,6 +137,7 @@ namespace ft
 				return _comp;
 			}
 
+			
 			/*************************************************/
 			/*                  Operations                   */
 			/*************************************************/
@@ -262,6 +263,61 @@ namespace ft
 				return (ft::make_pair(iterator(node), true));
 			}
 
+
+			ft::pair<iterator, bool>	at(const_reference value)
+			{
+				node_pointer tmp = _root;
+				node_pointer parent = NULL;
+
+				if (empty())
+					throw std::out_of_range("ft::map::at");
+				while (tmp != NULL && tmp != _end)
+				{
+					parent = tmp;
+					if (_comp(value.first, tmp->data.first))
+					{
+						tmp = tmp->left;
+					}
+					else if (_comp(tmp->data.first, value.first))
+					{
+						tmp = tmp->right;
+					}
+					else
+					{
+
+						return (ft::make_pair(iterator(tmp), false));
+					}
+				}
+				throw std::out_of_range("ft::map::at");
+			}
+
+			const ft::pair<iterator, bool>	at(const_reference value) const
+			{
+				node_pointer tmp = _root;
+				node_pointer parent = NULL;
+
+				if (empty())
+					throw std::out_of_range("ft::map::at");
+				while (tmp != NULL && tmp != _end)
+				{
+					parent = tmp;
+					if (_comp(value.first, tmp->data.first))
+					{
+						tmp = tmp->left;
+					}
+					else if (_comp(tmp->data.first, value.first))
+					{
+						tmp = tmp->right;
+					}
+					else
+					{
+
+						return (ft::make_pair(iterator(tmp), false));
+					}
+				}
+				throw std::out_of_range("ft::map::at");
+			}
+
 			void clear(node_pointer node)
 			{
 				if (!node || node == _end)
@@ -337,7 +393,7 @@ namespace ft
 						else
 							parent->right = NULL;
 					}
-					delete node;
+					destroy_node(node);
 					_size--;
 					update_end();
 					return ret;
